@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="color-scheme" content="light dark"/>
+<link rel="icon" href="data:,"/>
+<title>人格出厂设置 · 吐槽测试</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@600;700;900&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#F6EFDF; --bg2:#EFE3CB; --card:#FFFDF6; --card2:#F3E9D2;
+--ink:#262019; --muted:#77694F; --line:#D9C8A4;
+--accent:#B3371F; --accent-ink:#FFF7EA; --gold:#B07D16; --gold-bg:#F7E7BC;
+--teal:#1F6B5A; --blue:#33566E; --shadow:0 10px 30px rgba(90,50,10,.10);
+--radius:18px;
+}
+@media (prefers-color-scheme: dark){
+:root{
+--bg:#191510; --bg2:#211B13; --card:#292219; --card2:#2F2718;
+--ink:#F4EAD3; --muted:#C2AC87; --line:#4C3F2A;
+--accent:#FF8266; --accent-ink:#221106; --gold:#E8B34B; --gold-bg:#3D2F16;
+--teal:#5FC7AE; --blue:#8FB6CC; --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;min-height:44px}
+.wrap{max-width:720px;margin:0 auto;padding:20px 18px 56px}
+.serif{font-family:"Noto Serif SC",serif}
+/* cover */
+.cover{padding:28px 0 8px;text-align:left}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-bg);color:var(--gold);font-weight:800;font-size:13px;padding:6px 12px;border-radius:999px;border:1px solid var(--line)}
+.cover h1{font-family:"Noto Serif SC",serif;font-size:42px;line-height:1.15;margin:18px 0 10px;font-weight:900;letter-spacing:.01em}
+.cover h1 em{font-style:normal;color:var(--accent)}
+.cover.sub{font-size:17px;color:var(--muted);margin:0 0 18px}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 22px}
+.meta-chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13.5px;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:14px;padding:14px 22px;font-size:16px;font-weight:800;min-height:52px}
+.btn-primary{background:var(--accent);color:var(--accent-ink);width:100%;box-shadow:var(--shadow)}
+.btn-primary:active{transform:scale(.99)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);width:100%}
+.btn-small{width:auto;padding:10px 16px;min-height:44px;font-size:14px}
+.steps{background:var(--card2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:18px 0}
+.steps ol{margin:6px 0 0;padding-left:20px}
+.steps li{margin:4px 0}
+.notice{font-size:13px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:12px 14px;margin:16px 0}
+/* quiz */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:6px 0 12px}
+.topbar.count{font-weight:900;font-size:15px}
+.topbar.count span{color:var(--accent)}
+.text-btn{background:none;border:none;color:var(--muted);font-weight:700;font-size:14px;padding:10px 6px;min-height:44px}
+.progress{height:10px;background:var(--card2);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-bottom:22px}
+.progress i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width.35s ease}
+.qcard{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 18px 18px;box-shadow:var(--shadow)}
+.qnum{font-size:13px;font-weight:900;color:var(--gold);letter-spacing:.08em}
+.qtext{font-family:"Noto Serif SC",serif;font-size:23px;line-height:1.45;font-weight:700;margin:8px 0 18px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--bg);border:1.5px solid var(--line);border-radius:16px;padding:14px 14px;font-size:16px;line-height:1.5;color:var(--ink);min-height:56px;transition:border-color.15s, background.15s}
+.opt.k{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;margin-top:1px}
+@media (hover:hover) and (pointer:fine){.opt:hover{border-color:var(--accent)}}
+.opt{-webkit-tap-highlight-color:transparent}
+.opt:focus{outline:none}
+.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt.picked{background:var(--gold-bg);border-color:var(--accent)}
+.opt.picked.k{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.quiz-foot{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.hint{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}
+/* result */
+.result-head{text-align:center;padding:20px 0 6px}
+.result-head.kicker{font-size:13px;font-weight:900;letter-spacing:.12em;color:var(--gold)}
+.keys{display:flex;justify-content:center;gap:8px;margin:14px 0 6px;flex-wrap:wrap}
+.key-chip{background:var(--ink);color:var(--bg);font-weight:900;border-radius:999px;padding:7px 16px;font-size:16px}
+.result-title{font-family:"Noto Serif SC",serif;font-size:38px;font-weight:900;line-height:1.2;margin:10px 0 8px}
+.portrait{font-size:17px;color:var(--muted);margin:0 auto;max-width:520px}
+.roast{margin:20px 0;background:var(--gold-bg);border:1px solid var(--line);border-radius:18px;padding:16px 18px;font-size:16.5px}
+.roast b{color:var(--accent)}
+.traits{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0 4px}
+.trait{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:700}
+.scorebox{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin:18px 0}
+.scorebox h3{margin:0 0 10px;font-size:15px}
+.section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:14px 0}
+.section h2{font-family:"Noto Serif SC",serif;font-size:20px;margin:0 0 10px;display:flex;align-items:center;gap:9px}
+.section h2.dot{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:0 0 auto}
+.section p{margin:0 0 8px}
+.section ul,.section ol{margin:6px 0;padding-left:22px}
+.section li{margin:7px 0}
+.fit{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:560px){.fit{grid-template-columns:1fr 1fr}}
+.fit-card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px}
+.fit-card h4{margin:0 0 6px;font-size:14px;color:var(--accent)}
+.fit-card p{font-size:14.5px;margin:0}
+.action-card{background:var(--accent);color:var(--accent-ink);border-radius:var(--radius);padding:18px;margin:14px 0}
+.action-card h2{font-family:"Noto Serif SC",serif;margin:0 0 8px;font-size:19px;color:inherit}
+.action-card p{margin:0;font-size:16px;font-weight:600}
+.result-actions{display:grid;grid-template-columns:1fr;gap:10px;margin:20px 0 8px}
+@media(min-width:560px){.result-actions{grid-template-columns:1fr 1fr}}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:opacity.25s;z-index:50;max-width:88vw;text-align:center}
+.toast.show{opacity:1}
+.calc{text-align:center;padding:70px 0}
+.calc.spin{width:46px;height:46px;border-radius:50%;border:5px solid var(--line);border-top-color:var(--accent);margin:0 auto 18px;animation:sp 0.8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.calc.spin{animation:none}.progress i{transition:none}}
+/* —— 出厂铭牌风 —— */
+.display{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-weight:400;letter-spacing:.02em}
+.hand{font-family:"Ma Shan Zheng","Noto Serif SC",serif}
+.cover h1{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-weight:400;font-size:54px;letter-spacing:.03em}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.stamp{display:inline-block;font-family:"Ma Shan Zheng","Noto Serif SC",serif;color:var(--accent);border:2.5px solid var(--accent);border-radius:8px;padding:3px 12px;font-size:19px;transform:rotate(-4deg);letter-spacing:.14em;white-space:nowrap}
+.qcard{border:1.5px solid var(--ink);box-shadow:6px 6px 0 var(--line)}
+.btn-primary{border:1.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.btn-primary:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn-ghost{border:1.5px solid var(--ink)}
+.qtext{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-weight:400;font-size:25px;letter-spacing:.01em}
+.qnum{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;letter-spacing:.14em}
+.result-title{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-weight:400;font-size:44px;letter-spacing:.03em}
+.roast{font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:19.5px}
+.roast b{font-family:"Noto Sans SC",sans-serif;font-size:13.5px}
+.section h2{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-weight:400;letter-spacing:.03em;font-size:22px}
+.action-card h2{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-weight:400;letter-spacing:.03em}
+.plate{position:relative;background:var(--card);border:1.5px solid var(--ink);border-radius:14px;box-shadow:6px 6px 0 var(--line);padding:20px 18px 14px;margin-top:6px}
+.plate .stamp{position:absolute;top:14px;right:14px;font-size:16px;padding:2px 9px}
+.plate-no{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;letter-spacing:.18em;color:var(--muted);font-size:13px;text-align:center;padding:0 104px 0 8px}
+.segbar{display:flex;height:16px;border:1.5px solid var(--ink);border-radius:6px;overflow:hidden;margin:6px 0 4px;background:var(--bg2)}
+.segbar i{display:block;height:100%}
+.seg-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;font-weight:700;margin-bottom:12px;color:var(--muted)}
+.seg-legend .win{color:var(--accent)}
+.radar-wrap{display:flex;justify-content:center;margin:2px 0}
+.radar-wrap svg{max-width:290px;width:100%;height:auto}
+.mask{position:fixed;inset:0;background:rgba(22,14,4,.55);display:flex;align-items:flex-end;justify-content:center;z-index:60}
+@media(min-width:560px){.mask{align-items:center;padding:20px}}
+.sheet{background:var(--card);width:100%;max-width:440px;border-radius:22px 22px 0 0;border:1.5px solid var(--ink);padding:24px 22px 26px;box-shadow:0 -8px 40px rgba(0,0,0,.25);max-height:92vh;overflow:auto}
+@media(min-width:560px){.sheet{border-radius:20px}}
+.sheet h3{font-family:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;font-weight:400;font-size:26px;margin:0 0 6px;letter-spacing:.03em}
+.sheet p{color:var(--muted);font-size:14.5px;margin:0 0 14px}
+.code-input{width:100%;font-size:20px;letter-spacing:.22em;text-transform:uppercase;text-align:center;padding:13px 10px;border:1.5px solid var(--ink);border-radius:12px;background:var(--bg);color:var(--ink);font-weight:800;font-family:ui-monospace,Menlo,Consolas,monospace}
+.code-input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.code-err{color:var(--accent);font-size:13.5px;font-weight:700;min-height:20px;margin:8px 0 6px;text-align:center}
+.shake{animation:shk .3s}
+@keyframes shk{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media (prefers-reduced-motion: reduce){.shake{animation:none}}
+.meta-chip.time{font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:16.5px;letter-spacing:.06em}
+.hidden{display:none!important}
+footer{margin-top:34px;font-size:12.5px;color:var(--muted);text-align:center;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- COVER -->
+<section id="view-cover">
+<div class="cover">
+<div class="cover-top">
+<span class="badge">✦ 原创娱乐向自测</span>
+<span class="stamp">出厂设置 · 待读取</span>
+</div>
+<h1>人格出厂<br><em>设置</em>读取中</h1>
+<p class="sub">每个人出厂时都预装了一套默认设置：怎么做决定、怎么充电、怎么开口。凭第一反应答完题，读取你的出厂配置——顺便听一句不太客气的吐槽，再带走一份只属于你这款配置的深度报告。</p>
+<div class="meta-row">
+<span class="meta-chip time">⏱ 约五分钟，读完你的出厂配置</span>
+</div>
+<button class="btn btn-primary" id="btn-start">输入开门码，开始读取 →</button>
+<p class="hint">开门码在下单后由系统自动发送，一单一码，凭码进门。</p>
+</div>
+
+<div class="steps">
+<strong>怎么玩</strong>
+<ol>
+<li>先输开门码进门：一题一屏，每题 4 个选项，选最像你的那个（选 D「看情况」不计分，很正常）。</li>
+<li>选完自动进下一题，点错了可以点「上一题」改。</li>
+<li>答完后按你的答题倾向拼出出厂配置——结果页只展开你这一款的深度报告，带配置图一眼看懂。</li>
+</ol>
+</div>
+
+<div class="notice">声明：这是一份原创娱乐向自测，题目和解读全部为原创，不是官方 MBTI，也不是心理测评；与 The Myers-Briggs Company 无关，不作诊断、治疗、招聘决策依据，结果仅供娱乐和自我探索参考。每款出厂配置没有高低之分，也没有「好人格 / 坏人格」。</div>
+
+</section>
+
+<!-- QUIZ -->
+<section id="view-quiz" class="hidden">
+<div class="topbar">
+<button class="text-btn" id="btn-quit">← 退出</button>
+<span class="count">第 <span id="q-cur">1</span> / 30 题</span>
+<button class="text-btn" id="btn-restart1">重开</button>
+</div>
+<div class="progress"><i id="q-bar" style="width:3%"></i></div>
+<div class="qcard">
+<div class="qnum" id="q-num">QUESTION 01</div>
+<div class="qtext" id="q-text"></div>
+<div class="opts" id="q-opts"></div>
+</div>
+<div class="quiz-foot">
+<button class="btn btn-ghost btn-small" id="btn-prev">← 上一题</button>
+<span class="hint" style="margin:0">凭第一反应选，别想太久</span>
+</div>
+</section>
+
+<!-- CALC -->
+<section id="view-calc" class="hidden"><div class="calc"><div class="spin"></div><p class="serif" style="font-size:19px;font-weight:700">正在读取你的出厂配置……</p><p class="hand" style="color:var(--accent);font-size:18px">别急，马上就好</p></div></section>
+
+<!-- RESULT -->
+<section id="view-result" class="hidden"></section>
+
+<footer>人格出厂设置 · 吐槽测试｜原创娱乐向自测 · 非官方 MBTI · 非心理测评<br>不作诊断、治疗、招聘决策依据，仅供娱乐和自我探索参考。</footer>
+</div>
+<!-- GATE MODAL -->
+<div class="mask hidden" id="gate-mask">
+<div class="sheet" id="gate-sheet">
+<h3>先输开门码</h3>
+<p>下单后，系统会自动把你的专属开门码发给你（一单一码）。把 8 位码填进来，就能开始读取你的出厂配置。还没有码？回商品页下单，付款后自动发放。</p>
+<input class="code-input" id="gate-input" maxlength="8" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="输入 8 位开门码">
+<div class="code-err" id="gate-err"></div>
+<button class="btn btn-primary" id="btn-gate-go">开门，开始测试 →</button>
+<div style="height:10px"></div>
+<button class="btn btn-ghost" id="btn-gate-cancel">先不测了</button>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var DATA = {"questions": [{"n": 1, "q": "朋友突然说“在吗”，你的第一反应是？", "opts": ["肯定有事，先在脑子里想好三种回复", "先回一句“在”，边聊边想怎么办", "先放着，等会儿有心情了再回", "看是谁、看什么事再说"]}, {"n": 2, "q": "周末一个人待着，你是充电还是无聊？", "opts": ["充电，终于没人打扰我了", "前半天充电，后半天开始想找人说话", "待不住，得出去找点热闹", "看心情，有时充电有时无聊"]}, {"n": 3, "q": "别人夸你“你好聪明”，你心里想的是？", "opts": ["还行吧，这题本来就不难", "别夸了，直接说事", "哈哈，谢谢，我也这么觉得", "看谁夸的，再决定怎么回"]}, {"n": 4, "q": "接到一个新任务，你的第一步是？", "opts": ["先列个计划，把步骤、风险、截止时间都想清楚", "先动手做一小部分，边做边调整", "先放一放，等灵感或者deadline推我一把", "看任务多急再决定"]}, {"n": 5, "q": "买东西之前，你一般会？", "opts": ["做表格比价、看测评、想三天再下单", "看两眼差不多就买，不合适再退", "加入购物车，先冷静几天再说", "看东西，有的大件会比，有的随手就买"]}, {"n": 6, "q": "旅行前，你的准备方式是？", "opts": ["攻略做到小时级，酒店、路线、备选方案全有", "定个大概方向，到了再看", "不做攻略，走到哪玩到哪", "看跟谁去，跟人走就行"]}, {"n": 7, "q": "遇到一个没见过的问题，你会？", "opts": ["先查资料、想清楚再动手", "先试一次，错了再改", "先晾着，说不定过两天就有答案了", "看问题多重要再决定"]}, {"n": 8, "q": "别人问你“你怎么想”，你通常？", "opts": ["脑子里已经有完整答案了，直接说结论", "边说边整理，说着说着就清楚了", "先说“让我想想”，想好了再回", "看场合，有时直接说有时先想想"]}, {"n": 9, "q": "做决定最怕的是？", "opts": ["没想全，漏了什么", "想太多，错过时机", "被催着决定，没时间慢慢想", "没什么特别怕的"]}, {"n": 10, "q": "你的待办清单一般是？", "opts": ["写得清清楚楚，按顺序打勾", "写个大概，做完再划", "不写清单，记在脑子里", "有时写有时不写"]}, {"n": 11, "q": "忙了一整天之后，你最想？", "opts": ["一个人待着，什么话都不说", "找一两个熟人吃顿饭、聊聊天", "去人多的地方逛逛、热闹一下", "看当天状态再说"]}, {"n": 12, "q": "参加聚会，你的状态通常是？", "opts": ["待一会儿就想回家充电", "跟熟人聊得开心，陌生人面前比较安静", "越聊越精神，全场跑", "看聚会是谁组的再说"]}, {"n": 13, "q": "认识新朋友，你更喜欢？", "opts": ["一对一慢慢聊", "通过熟人介绍，小圈子里认识", "人越多越好，广撒网", "随缘，聊得来就聊"]}, {"n": 14, "q": "工作学习时，你更喜欢？", "opts": ["一个人安静地做", "跟一两个搭子一起做，互相提醒", "在热闹的咖啡馆、自习室，人气足才有劲", "看任务类型再说"]}, {"n": 15, "q": "连续社交三天之后，你会？", "opts": ["直接断电，需要一整天独处回血", "还行，跟熟人在一起不算累", "没事，还能再约", "看这三天都干了什么"]}, {"n": 16, "q": "难过的时候，你第一反应是？", "opts": ["自己消化，想清楚了再说", "找最熟的那个人说两句", "找人陪着，热闹点就不难受了", "看什么事再说"]}, {"n": 17, "q": "你的理想周末是？", "opts": ["一个人在家，看书、看剧、发呆", "跟两三个朋友约个饭、散个步", "组局、逛街、到处跑", "没有固定答案，看心情"]}, {"n": 18, "q": "群聊里，你一般是？", "opts": ["潜水，看大家聊", "熟人群里话多，生人群里潜水", "活跃气氛的那个", "看群、看话题再说"]}, {"n": 19, "q": "独处和社交，你的真实感受是？", "opts": ["独处是充电，社交是耗电", "独处和社交都要有，轮着来", "社交是充电，独处久了会闷", "看状态，有时这样有时那样"]}, {"n": 20, "q": "别人突然约你出门，你的第一反应是？", "opts": ["先想想今天累不累，再决定去不去", "看是谁约的，熟人就去", "好啊，走！", "看去哪、干什么再说"]}, {"n": 21, "q": "有不同意见时，你一般会？", "opts": ["直接说“我不同意，因为……”", "先肯定对方，再慢慢说自己的想法", "先不说，回去想想再决定要不要说", "看对方是谁、场合再说"]}, {"n": 22, "q": "想拒绝别人的请求时，你会？", "opts": ["直接说“不行，我做不了”", "先说“这个有点难”，再给个替代方案", "先拖一下，或者含糊过去", "看关系、看事情再说"]}, {"n": 23, "q": "被误会的时候，你的第一反应是？", "opts": ["当场解释清楚", "先听对方说完，再慢慢解释", "懒得解释，懂的人自然懂", "看误会有多大再说"]}, {"n": 24, "q": "表扬别人时，你一般会？", "opts": ["直接夸，具体说好在哪", "先寒暄两句，再夸", "夸不出口，放在心里", "看关系再说"]}, {"n": 25, "q": "想提建议但怕对方不高兴，你会？", "opts": ["照实说，对事不对人", "绕个弯子，用“要不要试试……”开头", "先不说，等合适的时机", "看建议多重要再说"]}, {"n": 26, "q": "聊天时，你的风格是？", "opts": ["有话直说，不绕弯", "先铺垫，再进正题", "想到哪说到哪，或者干脆少说", "看跟谁聊再说"]}, {"n": 27, "q": "别人问你一个不想回答的问题，你会？", "opts": ["直接说“这个我不想说”", "打个哈哈，换个话题", "沉默，或者回一句“嗯”", "看问题、看人再说"]}, {"n": 28, "q": "道歉的时候，你一般是？", "opts": ["直接说“对不起，是我错了”", "先解释一下原因，再道歉", "用行动弥补，嘴上不说", "看情况再说"]}, {"n": 29, "q": "想夸自己又怕显得自大，你会？", "opts": ["照实说，事实就是事实", "先自嘲一句，再说正事", "不说，等别人发现", "看场合再说"]}, {"n": 30, "q": "收到一条让你不舒服的消息，你会？", "opts": ["直接回，讲清楚", "先冷静一下，想好措辞再回", "先不回，放着再说", "看是谁发的再说"]}], "results": [{"key": "想–独–直", "title": "脑内总导演", "portrait": "脑子里已经排练了三遍，嘴上直接给结论。", "traits": ["想得比说得多", "独处时效率最高", "不喜欢绕弯子"], "roast": "你不是冷漠，你只是先在脑子里把话说完了。", "deep": "你的工作流是“独处排练 → 想透 → 直说”，三者叠加的效果就是：开口次数不多，但每句都是结论。独处对你来说不是躲人，是排练室，脑子里先把话说三遍，嘴上就只剩最关键的那一句。所以别人觉得你话少，其实你只是把 80% 的话留在了脑子里。", "strengths": ["决策质量高：想透了再说，翻车的时候比别人少，别人愿意把难决定交给你。", "独立扛事强：一个人待着效率最高，不用等人、不用开会凑热闹，自己就能把事推进完。", "沟通不内耗：直说就是直说，别人不用猜你到底想说什么，合作起来省时间。"], "blocks": ["想太多错过时机：等你想透了，机会可能已经被手快的人拿走了。", "直球容易砸疼人：你觉得自己只是在说结论，对方听到的可能是“你怎么这么凶”。", "独处太久会被误读：别人看你总是一个人，容易以为你冷漠、不好接近。"], "career": "适合做方案、评审、把关的活，别人做执行、你做最后一道检查；开会前先把结论写好，你的直球才有杀伤力。", "love": "熟人知道你靠谱，但刚认识的人需要一点热身；谈恋爱时别只发结论，补一句“我是怎么想的”，对方会觉得暖很多。", "action": "下次开会前，先把结论写成三行再开口。"}, {"key": "想–独–绕", "title": "慢热策划师", "portrait": "想得很透，说得很慢，但每句都算数。", "traits": ["计划先行", "需要独处整理思路", "开口前先铺垫"], "roast": "你不是慢，你是把“快”留在了脑子里。", "deep": "你不是想得慢，是说得慢。脑子里想透之后，还要在脑子里把话打磨成能入口的版本才肯说，独处就是你的加工车间。绕对你来说不是没主见，是怕直说伤人，所以你宁可多铺垫三句，也要让对方听得舒服。", "strengths": ["说出来的话基本都经过推敲：别人听你说话放心，因为你很少说出要收回的话。", "能照顾对方感受：逻辑和体贴双在线，难缠的事交给你谈，气氛不会炸。", "计划周密执行稳：一件事交到你手里，步骤、风险、备选方案都齐了。"], "blocks": ["开口太慢，机会被抢：别人先说了，你的完美版本就只能留在脑子里了。", "绕太多，重点被淹没：铺垫了五句，对方只记住了第一句，你的结论白想了。", "独处时间太长容易被误会：别人看你半天没表态，会以为你没态度、没立场。"], "career": "适合写方案、做策划、带需要耐心的项目；结论先发文字版，别人先看文字、再听你讲，节奏就对了。", "love": "适合深度关系，对方会觉得你体贴；但表白、谈事的时候别铺垫三天，第一句就把意思点出来。", "action": "这周有重要的话要说，先发一条三句话的文字版，再当面聊。"}, {"key": "想–独–藏", "title": "沉默军师", "portrait": "全场最安静的人，脑子里已经推演到结局了。", "traits": ["观察力拉满", "独处回血", "话少但准"], "roast": "你不是没想法，你是觉得说出来也没人按你的来。", "deep": "你是全场最安静的人，但不是没想法，是脑子里已经推演到结局了。独处给你回血，也给你推演的时间；不说，是因为你还在等更好的时机，或者觉得说了也没人照做。你的沉默不是空白，是正在跑的后台程序。", "strengths": ["观察力强，看人看事准：别人看热闹，你看门道，复盘的时候总能说到点子上。", "判断独立，不容易被带节奏：你先想透再开口，别人起哄的时候你最清醒。", "关键时刻一句话能定调：平时不抢话，但真到要拍板的时候，你那一句最有分量。"], "blocks": ["想法憋太久错过参与窗口：等你想说的时候，讨论已经结束了。", "别人不知道你的价值：不说等于没有，功劳和判断都容易被忽略。", "容易被当成“没想法”：沉默太久，别人会默认你没意见，下次就不问你了。"], "career": "适合做分析、风控、复盘；关键结论要写下来发出来，别只放脑子里，写下来才算数。", "love": "朋友少而精，质量很高；但想靠近你的人不知道入口在哪，主动给熟人递一次“我的真实想法”，关系会近很多。", "action": "这周挑一件你早就看明白的事，写成三句话发给相关的人。"}, {"key": "想–圈–直", "title": "小圈直球手", "portrait": "只对熟人直球，陌生人面前先观察。", "traits": ["熟人面前坦率", "决策前会想清楚", "小圈子最舒服"], "roast": "你的直球，只发给 VIP。", "deep": "你的直球是 VIP 专享的：想透了才说，但只对熟人直说，陌生人面前先观察。小圈子是你的安全区，在里面你坦率、直接、不绕弯；出了圈子，你就先收起来看看情况。所以你的直率是有范围的，圈内人觉得你真诚，圈外人觉得你高冷。", "strengths": ["熟人圈里口碑好：靠谱又坦率，朋友有难事第一个想到的就是你。", "决策有质量：直说之前先想透，熟人听你的建议很少踩坑。", "小圈子凝聚力强：你把真话留给自己人，自己人也愿意把真话留给你。"], "blocks": ["圈外人觉得你高冷难接近：你只是还在观察，对方已经觉得被冷落了。", "直球只对内，跨部门、跨圈子沟通吃力：一出小圈子，你的直率就打折了。", "圈子太小容易信息茧房：总跟同一拨人聊，听不到圈子外的新消息。"], "career": "适合带小团队、做熟人协作的项目；跨部门沟通先找个熟人搭桥，借他的圈子递你的话。", "love": "恋爱里坦率是加分项，对方不用猜；但别只在小圈子里找对象，偶尔去新场子逛逛，直球也能发给新朋友。", "action": "这周主动跟一个不太熟的同事或同学打一次直球，先夸一句再说事。"}, {"key": "想–圈–绕", "title": "温柔推演家", "portrait": "先想明白，再温柔地把人带到结论上。", "traits": ["逻辑在线", "顾及对方感受", "喜欢深度聊天"], "roast": "你不是绕，你是怕直球砸疼人。", "deep": "你是“先想明白，再温柔地把人带到结论上”的那类人。逻辑在线，顾及感受，深度聊天是你的充电方式。绕对你来说是一种体贴：你怕直球砸疼人，所以宁可多走两步，把对方轻轻带到答案面前。别人跟你聊完，会觉得“他都懂我”，这就是你的本事。", "strengths": ["劝人一流：别人愿意听你说话，因为你能把难听的真话说得让人接受。", "逻辑和共情双在线：既想得透，又顾及人，两头都占了。", "深度关系维护得好：朋友不多，但每个都处得深，关键时刻都站你这边。"], "blocks": ["绕太久，对方没耐心：你还在铺垫，对方已经想“你到底想说什么”了。", "想太多行动慢：结论想透了，执行却迟迟没开始。", "太顾及对方感受，自己的需求总往后放：帮别人想得多，自己的事反而没人帮。"], "career": "适合做协调、谈判、带新人；结论先想清，再温柔推，别人跟得上你的节奏。", "love": "伴侣觉得被照顾得很好；但也要直说一次自己的需求，别总绕，偶尔直说一句“我想要这个”，关系更健康。", "action": "这周对一个人说一次直白的需求，不加铺垫，只说“我想要……”。"}, {"key": "想–圈–藏", "title": "观察型队友", "portrait": "小圈子里的定海神针，平时不抢话，关键时刻一句话定调。", "traits": ["想得多说得少", "信任熟人", "靠谱但低调"], "roast": "你不是没存在感，你是把存在感存起来关键时刻用。", "deep": "你是小圈子里的定海神针，平时不抢话，关键时刻一句话定调。想得多说得少，信任熟人，但不轻易亮底牌。你的存在感是存起来的，平时看不出来，真到要拍板的时候，大家才发现原来你早就看明白了。", "strengths": ["靠谱低调，判断准：熟人知道你心里有数，关键时刻都愿意听你的。", "关键时刻能稳住场面：别人慌的时候，你一句话就能把局面拉回来。", "熟人信任度高：你不随便表态，所以你的表态才值钱。"], "blocks": ["功劳容易被忽略：不抢话，功劳簿上就容易没你的名字。", "想法不说出来等于没有：判断再准，不说出来就帮不上忙。", "太依赖小圈子，圈外没存在感：出了小圈子，别人根本不知道你是谁。"], "career": "适合做副手、参谋、质量把关；关键判断要留痕，别只放脑子里，写下来发给相关的人才算数。", "love": "伴侣眼里的靠谱担当；但要让对方知道你在想什么，别让对方猜，你不说，对方真的猜不到。", "action": "这周把你对一件事的真实判断写下来，发给最信任的那个人。"}, {"key": "想–闹–直", "title": "热闹场上的冷静派", "portrait": "人越多你越清醒，热闹里自带冷静滤镜。", "traits": ["想清楚再开口", "享受热闹但不依赖", "直率不拐弯"], "roast": "全场都在上头，只有你在算账。", "deep": "人越多你越清醒，热闹里自带冷静滤镜。想清楚再开口，直率不拐弯，享受热闹但不依赖它。别人一上头就跟着起哄，你一上头就开始算账：这事靠谱吗、风险在哪、下一步怎么办。所以派对上最清醒的人，往往就是你。", "strengths": ["热闹场合里最清醒的判断者：别人情绪上头时，你还能想清楚。", "能快速给结论：想透了就直说，大家不用等。", "不怕人多，越多人越稳：场面越大，你越冷静，适合当现场的定心丸。"], "blocks": ["直球在热闹场合容易被当成“扫兴”：大家正 high，你一句实话泼了冷水。", "想太多，玩的时候也在算账，累：别人放松，你还在复盘，充电没充上。", "别人以为你冷静就等于没感情：其实你只是先算账，感情在后面。"], "career": "适合做现场决策、活动统筹、紧急情况处理；结论要配一句“先这样，细节稍后补”，别人更容易接受。", "love": "朋友多，聚会里的定海神针；谈恋爱要记得，伴侣要的是共情，不是结论，先接住情绪再给建议。", "action": "下次聚会，有人问你意见，先给一句肯定的感受再给结论。"}, {"key": "想–闹–绕", "title": "社交翻译官", "portrait": "能把复杂想法翻译成人人听得懂的话。", "traits": ["思路清晰", "表达有铺垫", "热闹场合如鱼得水"], "roast": "你不是话多，你是自带字幕组。", "deep": "你能把复杂想法翻译成人人听得懂的话，思路清晰，表达有铺垫，热闹场合如鱼得水。别人脑子里一团乱麻，你一开口就自带字幕组：先铺垫，再讲清楚，最后点出结论。所以跨圈子、跨部门的事，大家都愿意先找你“翻译”一下。", "strengths": ["沟通翻译能力强：难事经你一说就变简单了，跨圈子吃得开。", "能把难事说简单：专业的东西你能讲出人话，别人听得懂才愿意配合。", "人缘好：你说话让人舒服，热闹场合里你是最受欢迎的那种人。"], "blocks": ["铺垫太多，重点后置：你讲了五句才到重点，急性子已经走神了。", "总在“翻译”别人的想法，自己的想法反而说得少：帮别人讲明白了，自己的主张却没人听见。", "热闹过后需要回血却不好意思走：明明累了，还硬撑着陪大家聊。"], "career": "适合做对接、宣讲、跨部门沟通；先给结论再展开，别只铺垫，结论先行、铺垫后补。", "love": "社交场合的加分项，带你出门不丢人；亲密关系里要留出“不用翻译”的直说时刻，对伴侣可以直接说。", "action": "这周写一条消息，用三句话把一件复杂的事讲明白，不加铺垫。"}, {"key": "想–闹–藏", "title": "人群里的隐身观察员", "portrait": "在热闹里默默观察，回家路上才复盘全场。", "traits": ["观察力强", "享受氛围但保留自己", "想法留在脑子里"], "roast": "你参加的不是聚会，是人类观察实验。", "deep": "你在热闹里默默观察，回家路上才复盘全场；享受氛围但保留自己，想法留在脑子里。对你来说，聚会不是社交任务，是一场人类观察实验：谁跟谁熟、谁在逞强、谁真正开心，你全看在眼里，只是不说。", "strengths": ["观察力强，看人准：别人只顾着聊，你已经把全场的人都看明白了。", "享受热闹又不被热闹绑架：该玩就玩，该走就走，不会被气氛推着走。", "复盘能力强：事后总结总能说到点子上，别人回头一想才发现你说得对。"], "blocks": ["现场不说话，存在感低：别人聚会完只记得爱说话的人，不记得你。", "复盘只在心里，别人不知道你看了多少：你的观察不说出来，等于白看了。", "想说的总在事后，错过了当场：回家路上才想明白，现场已经散了。"], "career": "适合做用户观察、复盘、竞品分析；观察结论要写下来发出来，写下来才算你的产出。", "love": "朋友觉得你神秘又有趣；但伴侣会觉得“你到底在想什么”，每周主动分享一次你的观察，别让对方猜。", "action": "这周聚会后，把你观察到的 1 个有意思的点发给一个在场的朋友。"}, {"key": "干–独–直", "title": "行动派独行侠", "portrait": "先干了再说，错了再改，改完再干。", "traits": ["行动力拉满", "独处效率最高", "有话直说"], "roast": "你的计划就是：先干，计划在路上。", "deep": "你的计划就是：先干，计划在路上。先干了再说，错了再改，改完再干；独处效率最高，有话直说。对你来说，想一百遍不如动一次手，边做边想才是你的节奏，坐在那想不如先把第一版做出来。", "strengths": ["行动力拉满，启动最快：别人还在讨论，你已经做出第一版了。", "独立扛事，不依赖别人：一个人就能开工，不用等人、不用凑齐人。", "沟通直接不内耗：有话直说，干错了就认，改起来也快。"], "blocks": ["干之前想得少，容易返工：第一版做出来发现方向错了，白干半天。", "直球容易伤人：你觉得自己只是在说实话，对方听到的可能是“你怎么这么冲”。", "独来独往，缺少帮手：什么都自己扛，累了也没人搭把手。"], "career": "适合做执行、开荒、救火；动手前花 5 分钟想一步再干，返工会少很多。", "love": "伴侣眼里行动力是加分项，说了就做；但要记得先说一句“我打算这么做”，别直接干完才说，对方会觉得被排除在外。", "action": "这周做一件事之前，先花 5 分钟写下“做完的标准是什么”，再动手。"}, {"key": "干–独–绕", "title": "先干后想的独行者", "portrait": "动手比动嘴快，解释比动手慢。", "traits": ["边做边调整", "独处时最专注", "表达喜欢先铺垫"], "roast": "你不是没计划，你的计划是“做了再说”。", "deep": "你动手比动嘴快，解释比动手慢，边做边调整；独处时最专注，表达喜欢先铺垫。做的比说的快，所以解释总慢半拍：事已经干完了，话还没组织好。你的计划不是没有，是“做了再说”，先把东西做出来，解释的事后面再补。", "strengths": ["执行力强，试错快：别人想方案的时候，你已经试了两版了。", "独处专注：一个人待着最能干活，不被打扰的时候产出最高。", "做事有分寸，懂得给人留台阶：表达喜欢先铺垫，不容易把话说死。"], "blocks": ["先干后想，返工多：方向没想清就动手，干完发现得重来。", "解释太慢，别人误解你的意图：你干完了，别人还不知道你为什么这么干。", "铺垫太多，该直说的时候没说：关键时刻还在铺垫，重点就被拖没了。"], "career": "适合做原型、执行、快速验证；干完立刻补一句话说明，别等别人问，同步越快误解越少。", "love": "用行动表达爱，伴侣看得见；但伴侣也需要听见你的想法，做完之后补一句“我是这么想的”，对方才懂你。", "action": "这周做完一件事后，立刻用三句话跟相关的人同步你为什么这么做。"}, {"key": "干–独–藏", "title": "闷头干活型", "portrait": "话最少，活干得最多。", "traits": ["行动优先", "独处充电", "用成果代替解释"], "roast": "你不是不想说，你是觉得说了也没干活快。", "deep": "你话最少，活干得最多；行动优先，独处充电，用成果代替解释。对你来说，说一句话的工夫都能干两行活了，所以宁可干，不说。你的逻辑很简单：成果就是解释，干出来了，别人自然就懂了。", "strengths": ["执行力最稳，交付靠谱：交到你手里的事，基本都能按时交出来。", "不邀功，口碑慢慢积累：时间一长，身边的人都知道你是真能干活的人。", "独立性强：一个人就能扛一摊子事，不用别人推着走。"], "blocks": ["功劳看不见，升职加薪吃亏：你不说，别人就默认这活“本来就是这样的”。", "不说想法，别人不知道你的判断：你心里有更好的方案，但没人听见。", "闷太久容易憋出情绪：累了、委屈了都不说，攒到最后一下子爆发。"], "career": "适合做交付、执行、攻坚；每周写一次“我这周干了什么”，发给相关的人，让成果被看见。", "love": "伴侣眼里的实干家，靠谱；但要让对方知道你的辛苦，别只让成果说话，偶尔说一句“我这周挺累的”。", "action": "这周五下班前，写 3 行“这周我干了什么”，发给你的搭档或伴侣。"}, {"key": "干–圈–直", "title": "队友推进器", "portrait": "小圈子里的发动机，推着大家往前走。", "traits": ["行动快", "熟人面前直率", "讨厌拖延"], "roast": "你的口头禅是“别想了，先干”。", "deep": "你是小圈子里的发动机，推着大家往前走；行动快，熟人面前直率，讨厌拖延。你的口头禅是“别想了，先干”：别人还在纠结，你已经把第一步迈出去了。小圈子是你的主场，在里面你推得动人，也推得动事。", "strengths": ["带小团队推进力强：有你在，事就不会停在讨论阶段。", "熟人圈里信任度高：大家知道你直率是冲着事去的，不是冲着人。", "执行加直率，效率拉满：想干就干，干错了就直说改，节奏快。"], "blocks": ["推太猛，队友跟不上：你跑起来了，别人还在起跑线，容易掉队。", "直球对熟人也可能伤人：熟人不等于不怕被说，直球砸到自己人身上也疼。", "只在小圈子里高效，跨圈子乏力：一出小圈子，你的发动机就没人认了。"], "career": "适合带小团队、做项目推进；推之前先问一句“你们这周能接多少”，按队友的量定节奏，别只按你的量。", "love": "朋友眼里的靠谱发动机，有事找你准没错；谈恋爱别总推着对方走，留点空白，对方也需要自己的节奏。", "action": "这周推进一件事之前，先问一圈队友“你们觉得卡在哪”，再定节奏。"}, {"key": "干–圈–绕", "title": "气氛推进手", "portrait": "边干活边顾气氛，进度和关系两手抓。", "traits": ["行动力强", "表达留有余地", "小圈子最有劲"], "roast": "你不是和事佬，你是怕吵架耽误干活。", "deep": "你边干活边顾气氛，进度和关系两手抓；行动力强，表达留有余地，小圈子最有劲。你不是和事佬，你是怕吵架耽误干活：气氛一炸，进度就停了，所以你宁可多绕一句，也要把事往前推。你的推进方式是“干活不伤人”。", "strengths": ["推进项目不伤和气：别人吵起来的时候，你还能把事往前推。", "小圈子凝聚力强：你顾气氛，圈子里的人都愿意跟着你干。", "执行和关系双在线：进度有了，人也没得罪，两头都占。"], "blocks": ["绕太多，推进变慢：该直说的没直说，进度被铺垫拖慢了。", "怕吵架耽误干活，结果该吵的架没吵：问题没摊开，留着以后爆。", "顾气氛顾到忘了自己的需求：总在照顾别人，自己要什么反而没人知道。"], "career": "适合做项目协调、带小团队；该直说的时候直说，气氛事后补，别让铺垫吃掉推进的速度。", "love": "伴侣觉得舒服又靠谱，跟你相处不累；但要记得表达自己的需求，别总当和事佬，偶尔直说一次“我不舒服”。", "action": "这周挑一件该直说的事，在小圈子里直接说一次，不铺垫。"}, {"key": "干–圈–藏", "title": "默默扛事型", "portrait": "不声不响把事扛下来，功劳簿上没名字。", "traits": ["先做再说", "信任小圈子", "不爱邀功"], "roast": "你不是没脾气，你是把脾气换成了执行力。", "deep": "你不声不响把事扛下来，功劳簿上没名字；先做再说，信任小圈子，不爱邀功。你不是没脾气，你是把脾气换成了执行力：有情绪先放一边，把事干完再说。小圈子是你的根据地，在里面你扛得最多，说得最少。", "strengths": ["扛事能力强：团队里最信任的人，难事交给你最放心。", "执行稳：先做再说，事交到你手里基本不会掉地上。", "情绪稳定，不抱怨：你不把情绪倒给别人，身边的人跟你合作很安心。"], "blocks": ["功劳看不见：不邀功，功劳簿上就容易没你的名字。", "扛太多，累了也不说：一个人扛到极限才停，中间没人知道你快扛不住了。", "想法不说，别人不知道你的判断：你心里有更好的做法，但没说出来，大家就按老办法走了。"], "career": "适合做骨干、执行核心；每月写一次“我扛了什么”，让功劳被看见，别等别人来发现。", "love": "伴侣眼里的定海神针，有你在就安心；但要让对方知道你累了，别硬扛，说一句“我有点累”不是示弱。", "action": "这周跟最信任的人说一次“我这周扛了什么，有点累”。"}, {"key": "干–闹–直", "title": "现场指挥官", "portrait": "人越多你越兴奋，现场直接开干。", "traits": ["行动快", "热闹充电", "直来直去"], "roast": "你的充电方式是：人越多，电越满。", "deep": "你人越多越兴奋，现场直接开干；行动快，热闹充电，直来直去。你的充电方式是：人越多，电越满。别人人多了会累，你人多了就来劲，现场有你在，气氛和进度一起起飞，指挥起来毫不拖泥带水。", "strengths": ["现场执行力最强：人多事杂的时候，你反而最清醒、最好使。", "人越多状态越好：热闹对你来说是充电，不是耗电。", "指挥果断，不拖泥带水：该拍板就拍板，大家不用等。"], "blocks": ["太兴奋容易冲动：现场一上头，没想清的决定也拍了，事后要返工。", "直球在现场容易伤人：人多的时候直说，等于当众点名，对方下不来台。", "热闹散了就没电，独处时效率低：一个人的时候反而提不起劲，充电方式太依赖人。"], "career": "适合做活动执行、现场管理、带大团队；指挥前先定 3 条底线，别全凭兴奋拍板，底线能帮你刹车。", "love": "朋友眼里的气氛担当，有你在场子不冷；谈恋爱要记得给伴侣留独处时间，别总拉着对方去热闹，对方也需要充电。", "action": "下次带队干活前，先写好 3 条“今天必须完成的事”，贴在显眼处。"}, {"key": "干–闹–绕", "title": "热场行动派", "portrait": "热场子的一把好手，干活也不含糊。", "traits": ["行动派", "表达有分寸", "人群里最有劲"], "roast": "你不是爱热闹，你是热闹里干活更快。", "deep": "你是热场子的一把好手，干活也不含糊；行动派，表达有分寸，人群里最有劲。你不是爱热闹，你是热闹里干活更快：人气一上来，你的执行力也跟着上来，气氛和进度一起走，别人看你是来玩的，其实你手里的活一点没落下。", "strengths": ["执行和气氛双在线：场子热了，活也干了，两头都不耽误。", "人群里如鱼得水：人越多你越有劲，适合带人、带场子。", "能把大家的积极性带起来：你一动，周围的人也跟着动起来了。"], "blocks": ["热闹优先，细节容易漏：气氛一上头，细节就容易被忽略。", "铺垫太多，关键指令传达慢：该直说的指令还在铺垫，现场已经等不及了。", "散场后复盘缺失：热闹完了就完了，哪些做得好、哪些漏了，没人总结。"], "career": "适合做活动、团建、现场执行；关键指令先直说，气氛后补，别让铺垫拖住现场节奏。", "love": "朋友圈里的开心果，有你就不冷场；亲密关系里要留出安静时刻，别总用热闹填，两个人安静待一会也很重要。", "action": "这周做完一件热闹的事后，写 3 行复盘：做成了什么、漏了什么、下次改什么。"}, {"key": "干–闹–藏", "title": "人群里的实干家", "portrait": "在热闹里默默干活，散场后第一个收尾。", "traits": ["行动优先", "享受氛围", "话少事多"], "roast": "派对结束时，大家才发现活都是你干的。", "deep": "你在热闹里默默干活，散场后第一个收尾；行动优先，享受氛围，话少事多。派对结束时，大家才发现活都是你干的：桌子是你收的，垃圾是你倒的，账是你算的。你享受热闹，但你的参与方式是干活，不是说话。", "strengths": ["执行力稳，收尾最靠谱：别人只管玩，你管收尾，事到你手里才算真正完了。", "热闹里不抢功：你不争表现，口碑反而慢慢积累起来了。", "散场后的收尾王：别人走了，你还在，把最后一点事也干完。"], "blocks": ["功劳看不见：话太少，别人不知道你干了多少，还以为你是来蹭热闹的。", "热闹时不说想法，事后才想起来：现场该提的建议没提，散场了才想起来。", "总在收尾，没时间享受：别人都玩开心了，你光顾着收尾，自己的乐趣被压缩了。"], "career": "适合做执行、收尾、保障；干完的事要留痕，每周同步一次，让别人知道你干了什么。", "love": "伴侣眼里的踏实担当，靠谱；但要让对方知道你的付出，别只默默干，偶尔说一句“今天我收尾收得有点累”。", "action": "这周做完一件事后，立刻发一条三行小结给相关的人，别只埋头收尾。"}, {"key": "飘–独–直", "title": "灵感独行侠", "portrait": "灵感来了挡不住，没灵感时谁也别催。", "traits": ["随性但敏锐", "独处最有灵感", "想到就直说"], "roast": "你的日程表只有一行：看灵感心情。", "deep": "你灵感来了挡不住，没灵感时谁也别催；随性但敏锐，独处最有灵感，想到就直说。你的日程表只有一行：看灵感心情。灵感在的时候，你一个人待着能干出别人一周的活；灵感不在的时候，谁催都没用，你只想先放着。", "strengths": ["灵感来时产出惊人：状态对的时候，你的点子又快又好，别人追不上。", "直率不内耗：想到就直说，不用铺垫，不用猜，心里痛快。", "独处时创造力最高：一个人待着，灵感来得最顺，不需要别人给刺激。"], "blocks": ["没灵感时效率归零：状态一掉，什么都干不了，deadline 全靠命。", "直球配随性，容易伤人还不自知：想到就说，没过脑子的话容易伤人。", "计划性差：日程表只有“看灵感心情”，长线计划总被灵感打乱。"], "career": "适合做创意、内容、探索型工作；灵感来了立刻记下来，趁热做一小步，别等灵感走了再后悔。", "love": "伴侣眼里的灵感担当，有你在日子不无聊；但要给对方一个“灵感日程”，别总让人猜你今天有没有灵感，先说一句“我今天状态怎么样”。", "action": "这周灵感来的时候，立刻用手机记下 3 行，24 小时内做成一个小东西。"}, {"key": "飘–独–绕", "title": "白天做梦家", "portrait": "脑子里住着一个宇宙，现实世界只是偶尔上线。", "traits": ["想象力拉满", "独处充电", "表达慢半拍"], "roast": "你不是拖延，你是在等灵感排队。", "deep": "你脑子里住着一个宇宙，现实世界只是偶尔上线；想象力拉满，独处充电，表达慢半拍。你不是拖延，你是在等灵感排队：脑子里想法太多，一个个排着队等落地，嘴上就慢了半拍。别人看到你在发呆，其实你正在脑内开会。", "strengths": ["想象力最强，点子多：别人想一个，你能想十个，创意池子永远是满的。", "独处时灵感不断：一个人待着，想法自己往外冒，不需要外部刺激。", "表达温和，不伤人：慢半拍也有好处，说出来的话都经过了脑内过滤。"], "blocks": ["想法太多，落地太少：脑内宇宙很大，现实产出很少。", "慢半拍，机会溜走：等你想明白要说什么，话题已经换了。", "现实感弱，计划总停在脑子里：想法没写下来，就等于没想过。"], "career": "适合做创意、策划、内容；想法要配一个“这周落地的一小步”，光想不做不算数。", "love": "伴侣眼里的梦想家，跟你在一起不无聊；但要把一个想法真的做出来给对方看，别只讲，做出一个小东西比讲十个想法更管用。", "action": "这周挑脑子里最喜欢的 1 个想法，做一个 30 分钟能完成的小版本。"}, {"key": "飘–独–藏", "title": "脑内宇宙漫游者", "portrait": "表面在发呆，脑内已经环游世界一圈了。", "traits": ["发散思维", "独处最舒服", "想法先存脑子里"], "roast": "你不是走神，你是在脑内出差。", "deep": "你表面在发呆，脑内已经环游世界一圈了；发散思维，独处最舒服，想法先存脑子里。你不是走神，你是在脑内出差：一个点能联想到十个点，十个点又连成一片，别人看你愣了五分钟，你已经在脑内开完一圈会了。", "strengths": ["发散思维强，联想能力一流：别人看不到的联系，你一眼就能看到。", "独处充电满格：一个人待着最舒服，电量回得最快。", "观察内省能力深：你对自己的想法看得很清楚，内省比别人深一层。"], "blocks": ["想法只存脑子里，等于没有：不写下来、不说出来，脑内环游再精彩也没人知道。", "发呆时间太长，别人以为你不在状态：开会、聚会时走神，别人会觉得你没在听。", "落地能力最弱：想法多、行动少，宇宙漫游完了，现实还停在原地。"], "career": "适合做创意、研究、内容策划；脑内想法要写进备忘录，每周挑 1 个落地，写下来才算你的产出。", "love": "伴侣眼里的神秘派，跟你聊天总有新东西；但要定期把你的脑内宇宙讲给对方听，别只自己漫游，分享一次，你的宇宙才有人进。", "action": "这周把脑子里转得最多的 1 个想法写下来，发给一个朋友，听听他怎么说。"}, {"key": "飘–圈–直", "title": "灵感分享家", "portrait": "有了好想法，第一时间分享给熟人。", "traits": ["灵感驱动", "小圈子分享欲强", "直率表达"], "roast": "你的灵感不分享，会过期。", "deep": "你有了好想法，第一时间分享给熟人；灵感驱动，小圈子分享欲强，直率表达。你的灵感不分享，会过期：想法一来就得赶紧说给熟人听，不说出来就觉得亏了。小圈子是你的首发站，在里面你想到就说，想到就讲，点子从来不过夜。", "strengths": ["灵感加分享，点子不浪费：想法一出来就有人接，不会烂在脑子里。", "小圈子里创意氛围好：你一分享，别人也跟着分享，点子越聊越多。", "直率让合作高效：想到就直说，熟人不用猜你的意思，合作起来快。"], "blocks": ["灵感不分享会过期，但分享太多，熟人跟不上：你一天十个点子，别人一天只能接一个。", "直球配随性，容易打击别人的热情：你想到就说，没注意对方正在兴头上。", "想法多，执行少：分享了一圈，真正动手做的没几个。"], "career": "适合做创意、内容、头脑风暴；分享之前先问一句“这个想法现在说合适吗”，时机对了，点子才有人接。", "love": "朋友眼里的点子王，有你在不无聊；谈恋爱要记得，伴侣要的是陪伴，不是一天 10 个新点子，陪他安静待一会也很重要。", "action": "这周只分享 1 个你最看好的想法，并且把它做成一个小东西再分享。"}, {"key": "飘–圈–绕", "title": "随性聊天家", "portrait": "聊天没有提纲，但总能聊出新东西。", "traits": ["随性", "喜欢深度闲聊", "表达温和"], "roast": "你不是没重点，你的重点在下一句。", "deep": "你聊天没有提纲，但总能聊出新东西；随性，喜欢深度闲聊，表达温和。你不是没重点，你的重点在下一句：话题飘来飘去，但每飘一步都能碰出一个新想法。别人聊天是为了说话，你聊天是为了发现，聊着聊着就聊出新东西了。", "strengths": ["深度闲聊能聊出真东西：没提纲的聊天反而最容易聊到点子上。", "小圈子里氛围轻松：跟你聊天不累，熟人都喜欢找你闲聊。", "温和表达不伤人：你说话留有余地，别人愿意跟你聊真心话。"], "blocks": ["聊天没重点，时间容易溜走：聊了三小时，什么都没留下。", "想法只停留在聊天里，不落地：聊出来的好点子，聊完就散了。", "绕太多，关键信息总在下一句：对方听了半天，还在等你说重点。"], "career": "适合做用户访谈、创意讨论、关系维护；聊天后要留一句“我们刚才聊到最有用的 1 点是……”，把聊出来的东西定下来。", "love": "朋友眼里的聊天搭子，跟你聊天最放松；谈恋爱要记得把聊出来的好点子真的做一次，做出来了，聊天才算没白聊。", "action": "这周跟熟人聊完一次天后，把聊出的 1 个好点子记下来，24 小时内做一小步。"}, {"key": "飘–圈–藏", "title": "佛系观察员", "portrait": "随缘、随性、随手记录，什么都不强求。", "traits": ["松弛感拉满", "小圈子最舒服", "观察多于表达"], "roast": "你不是佛系，你是把力气留给了真正想做的事。", "deep": "你随缘、随性、随手记录，什么都不强求；松弛感拉满，小圈子最舒服，观察多于表达。你不是佛系，你是把力气留给了真正想做的事：不争、不抢、不着急，但心里有数，真正想做的事，你比谁都清楚。你的松弛不是躺平，是先看清楚再出手。", "strengths": ["松弛感强，情绪稳：别人焦虑的时候，你最稳，身边的人跟你待着很安心。", "观察力深，看人准：你不怎么说话，但看得比谁都清楚。", "不内耗，活得轻松：不跟别人比，不跟自己较劲，力气都留给了真正想做的事。"], "blocks": ["太随缘，机会也随缘：不主动争取，机会来了也可能从你身边溜走。", "观察多表达少，别人不知道你的想法：你心里有数，但不说出来，别人就以为你没主意。", "松弛过头，变成拖延：随缘的尽头是“下次再说”，下次一直没来。"], "career": "适合做观察、复盘、内容；观察要写下来，每周发一次“我这周看到的有意思的事”，写下来才算你的产出。", "love": "伴侣眼里的松弛担当，跟你在一起不累；但要主动表达一次你的真实想法，别总“随缘”，偶尔直说一句“我想要这个”。", "action": "这周把随手记的 1 条观察发给一个熟人，问问他怎么看。"}, {"key": "飘–闹–直", "title": "热闹里的自由灵魂", "portrait": "哪热闹往哪去，灵感在人群里找。", "traits": ["随性", "热闹充电", "想到就说"], "roast": "你的计划就是没有计划，计划就是去热闹的地方。", "deep": "你哪热闹往哪去，灵感在人群里找；随性，热闹充电，想到就说。你的计划就是没有计划，计划就是去热闹的地方：人群是你的灵感来源，人越多，你的想法越多。别人去热闹的地方是为了玩，你去热闹的地方是为了找灵感，顺便玩。", "strengths": ["人群里灵感不断：人越多，你的点子越多，社交场合就是你的灵感池。", "直率不内耗：想到就说，不用铺垫，心里痛快，别人也听得明白。", "社交能量最强：热闹对你来说是充电，不是耗电，越玩越有劲。"], "blocks": ["没计划，deadline 靠运气：计划就是“去热闹的地方”，正事总被热闹挤掉。", "直球在热闹里容易伤人：想到就说，人多的时候等于当众点名。", "热闹过后空虚感强：人一散，灵感也没了，留下一堆没落地的想法。"], "career": "适合做活动、内容、社交型工作；热闹之前先定 1 个“今天必须带走的成果”，带着目标去，人群才算没白去。", "love": "朋友眼里的自由灵魂，有你在就有意思；谈恋爱要给伴侣留安静时间，别总拖着对方去热闹，对方也需要安静。", "action": "下次去热闹场合之前，先写好 1 句话“今天我要带回来的 1 个东西”。"}, {"key": "飘–闹–绕", "title": "派对灵感家", "portrait": "派对上的灵感担当，点子一个接一个。", "traits": ["发散", "热闹里最有劲", "表达带铺垫"], "roast": "你不是话多，你是灵感太多装不下。", "deep": "你是派对上的灵感担当，点子一个接一个；发散，热闹里最有劲，表达带铺垫。你不是话多，你是灵感太多装不下：人群一热，你的点子就一个接一个往外冒，铺垫着讲、笑着讲，别人听着过瘾，你也讲得开心。派对是你的灵感主场。", "strengths": ["热闹场合里点子最多：别人玩的时候，你已经想出三个新点子了。", "气氛和创意双在线：你能把场子带热，也能把点子讲明白。", "感染力强：你的热情会传染，周围的人听了你的点子也想动手试试。"], "blocks": ["点子多，落地少：派对上讲了一堆，第二天一个都没做。", "铺垫太多，点子说到一半就被打断：还没讲到重点，话题已经换了。", "热闹过后复盘缺失：点子没记下来，派对一散，灵感也跟着散了。"], "career": "适合做创意、活动、头脑风暴；点子要立刻记下来，派对结束 24 小时内挑 1 个做，记下来才算你的。", "love": "朋友眼里的灵感担当，有你在派对不冷场；亲密关系里要把点子真的落地一次，别只在派对上讲，做出来一次，伴侣才会信你的点子。", "action": "下次派对后 24 小时内，把当晚最好的 1 个点子做成一个小东西。"}, {"key": "飘–闹–藏", "title": "角落里的白日梦想家", "portrait": "在最热闹的角落，安静地做着自己的白日梦。", "traits": ["想象力强", "享受氛围", "想法留在心里"], "roast": "你参加派对的方式是：人在现场，心在云端。", "deep": "你在最热闹的角落，安静地做着自己的白日梦；想象力强，享受氛围，想法留在心里。你参加派对的方式是：人在现场，心在云端。别人热闹他们的，你在角落里自有宇宙：热闹给你氛围，白日梦给你灵感，两样都要，一样不少。", "strengths": ["想象力最自由：角落里没人打扰你的白日梦，想法可以飞到任何地方。", "热闹里也能独处充电：人在现场，心在云端，氛围和独处两不误。", "观察加想象双在线：你既看得见全场，又想得比全场远。"], "blocks": ["想法只留在心里，别人不知道：白日梦再精彩，不说出来就没人知道。", "角落里待太久，存在感归零：别人聚会完根本没注意到你来了。", "白日梦做太多，现实行动太少：梦里环游了世界，现实还停在角落里。"], "career": "适合做创意、内容、观察；角落里的想法要写下来，每周分享 1 次，写下来、说出来才算你的产出。", "love": "伴侣眼里的神秘梦想家，跟你在一起总有新东西；但要主动分享一次你的白日梦，别只自己做，讲给一个人听，你的梦才有人进。", "action": "这周把你在角落里想的 1 个白日梦写下来，讲给一个熟人听。"}]};
+var QS = DATA.questions, RS = DATA.results;
+var AXES = [
+{name:"决策方式", labels:["想","干","飘"]},
+{name:"能量来源", labels:["独","圈","闹"]},
+{name:"表达方式", labels:["直","绕","藏"]}
+];
+var LETTERS = ["A","B","C","D"];
+var state = { idx:0, answers:[]}; // answers: 0..3 or null
+function $(id){return document.getElementById(id);}
+function show(id){
+["view-cover","view-quiz","view-calc","view-result"].forEach(function(v){ $(v).classList.toggle("hidden", v!==id);});
+window.scrollTo({top:0, behavior:"instant"});
+}
+function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(function(){t.classList.remove("show");},2200);}
+
+/* 开门码：一批随机码，与自动发货的卡密库共用同一份名单，一单一码随机发放 */
+var CODE_HASHES = "6259e5de4cc9ec180632577706f12eb6bd5caeecc93ed5726dc60185dbfad6b0,573db5f8d0794921ddb7332bdc9fece5a72e3e33f62b360152fb927a0030645c,86a23d72a228ca432b3aa45017a00e9601567ac879c4e1e279bd31a3d99299a2,f162d0c7f155f4e8d0d2ee3b7a9c2645ec95f8fbd96dfe0a4ae9a406c35422e7,cec0ebaf5a5c3882d39990afe2f037d233ee2d1c116e3c51c0791d31d685c663,1d98f3f4dc029565fb56f814383ec1dd625b6d23414e90e00069199d7d9cb732,dfa2036fb7449a7523a89b982b766f9429587949d734849fcf0696b257475f0e,d1f70466b657868f04bca06dba65b79810c9977c617f2a0d4d8ac91583e356fa,c0e3c6dd9ea391dba39d14ff41854f0b799e4a1370a93b241da058c5bd7a6641,e3ccfa516614c37bf17351f6c29f7f2c9302bf3867dbf2115d4a148f28799596,bc4e9ae6a5bea80b3718d099edc457cce6abe3fd7ca4d6ce8e07e9a2dc9e23fb,e188eb7d434af35be1bf43699e0b6a6ab6fab8e88a6ad095095d2a76a6ce4687,c04b41f1d3a0f4177ce52d83212fe8bde0ef707ecd1fedeb6dc18738cf03d44a,4239c89a4deebac1004670bf6da06c857100fca46eacece6f936bc1d52411602,53485b1a07ac525e22605674c05b9872f4e9e21b2b9e4b1d35599d2b0fdff018,62328b8bb7aac5a6c4acfb2cc52608d9afb0285e4eab323b806db8bfeba0d581,29ffdfea8bde19087dc295de9e08a0fb9bee6b48f1a4dc5742b212aa2360ddcc,83d2aead4df54f0f6c8a170cd61024292172324ef88d8f570b98a77e800a3aa5,cbb05936a85a53315a0763656c4d2ac7b5720940c4d3bd2916bf1b3c0321fa17,3433479f9fd2c62292a31be00af65938a67c6bc854afd23a06b44872a9f011ef,1802b48a1dbca9c13bf47d86a95716c9e9bdac5e4226d7f2b8d577a1115c49d7,d3bf97b00defdcc343992f6a8c684da97f7784ca6cfddaae3609634cc5497850,b5b78dee6387370f10628ecae2a9b7b6630f8f3908ab2385c6f2a2e927ea915f,189757d14a5944add2727762ec4015345720b3ea757cea3346b7a85730fdbe8c,fb9868c1585af0784eb8236bde3406b4ed5c02751cd24f5bec790543c84dddb8,6e9dc864ebf79df9eccfab1f09fabf11c335773146f733e6de1c18283a555195,cc0beb7347e54873aa01146ce5d4e43eefd014662eef6b92b16458036673dd25,a6d6639ddb5eb220b13e1422b5df1a00a4b1997aee224f2db90159d996a13e71,6460e31894232b4ac66737fb2e5421e650773202de338229f0a6454f5a51330b,76d0bd9e3c40a2640714fc9cfdf966887b576e934090e0b6a2ca80f9f2e41486,d770f9214572579542c05939a8faf97e95ace9579c97bafb7a284883eac64020,277218fc7cce86f556bf1b23f07d5d6ee43e411af53afaf7f2e30baab15a7382,42a5b57e33c168eb9113215209211a2177b890bff9aacc8b837b8673380ae559,95f5263f3e484fb7b78f40d940dfb298abdf810f9eaceb10a896cdf97127e5da,1703706061b69595ba2cbde5ed14358e8e7287b171e3600fe34617922f441992,d837783de0f544c2213afe36b6b5d93d06b8c3071329e716ce38dc958fb59594,dcb2d8806c8f85e553265eadf66ad06fee129c7beee21233d512d64f54383ef7,85b84bba3ec6bbaea446e1e80dd180d600e7694f7434464fccd5c04050b603a0,3f12233981db1554154e8701b421e444d6f746410322c82f1b6657b043c68179,07ba75d2193f9c3528f4884a2a31aecc52bc072f530aeb63dcd90188a55bcd38,9ae48efed6e33eec99f02243763eba9db6d0e26001abd65d505762d5dc9310ee,46d7e8aef95bb3dcff240e63fdee009e1c20ad6b167b85f72a936847c0861086,cf2126c9e9469e8d58375a5b2cb12f03babb8970e87422ffe2b78c75ae5b569d,3e1875d13bab380b8344aee68ad0954acd5251b8fbcfcbd2f866c6ae845c7ec2,2d962f6ec50f8c957aa4bb413764a04a9ffdb40fee4f5ec9909a4d4c2cc2d626,4fd7ac23aa9377af8ac0aecb07e17f1fa865a5e87d2b66665ca7bbdfcef0a390,a28785046245f8c2b0d5e858d008a0548ccb5cae4a574a9786c8ecafd917776a,5b7c590c3bd7a85416107f0188130ae355be546ca26600712708b2f818cc997e,9895c72f6a2397208747273f7971b16bc6ee0015a0b88a4f25467fe64dae35dc,c91cce444fa90e5362dad72cf13e20722dac901641ad36de99ddafe030bb1e66,db69e436e5bfcc372d53b42353aafdcc3813d62c8a407f1183bb38c46b12699a,15ea5f1beaa40c12df16fcfa38ec280df0026572bc6bdf6f86b2d4b6e8e2652d,1a8b5ddcae0b3859e75c8ffb5c64f2f2cade1c64753d67dd77b0d4f6ea5abb23,774af50abe21f0edbe7fdf66aa363b70e594eba6ab1e38ece6acb277127f8bba,25445f99f2d193ffd18198f97b660e5be01057516d6753362bf4a1070356a27f,e6b67574e964bd614084b6e9955f67ac4d73b107e5e5b8bbe81628cd97a461bb,7425dc8d3852a9cfef2f6c548e02437b5cfff5aa9cc6c97cccdf8436f5cb04c7,5e73dbda6e0cad63eca37530874b46f05d2e7d8fb2e967b556141e8df56d4f0b,e1fd75e229119992e75bbfc1a7582c7042bcb46bd86d164d75f99f302494234e,9eb2e709bc180dc6ed86e44f35b6951bac9a1d6824614aa490639d8f3af69008,d9f5c61730823c84fcf8609a5962daeda33ede0ec17d86802ac9f4d5acb0e16f,4bd69c4cd9ec0922bea6579aa71005b4387ccafc7034fcb5895bb1c826f311ed,ff327abe91d0c72702d9efbdb9a0a52ec89a81513f292b2ad2a6e866f07d0c07,2662e59f3704abf0dd98e3052b6ee0d5ac8b35712fd1078a4dbbc887948e84d7,54bec9edf06ec1a11b3841383d3d2c0a98f62a73e9c20ae69756acb5ffcb1177,b5bd3f4778fa970501a4ac70201d57307cace8e31e89d043d94ae70166daf0e3,723129ac9d76c156bdd59ba4e13c1a3c895cb520ea913675e10b9791422fcf1d,2c2cc2480915db6e2aba8f0d14a53b6365a5c0e1019403ee434a823635e0ef45,577028307ae7467cf20005e12601098c899bd0b2fc41e114e5896e31d625def3,b88be6f31537a201c710152fe425256658aadcd1d6af711c2b3743e866233d12,2c1f0e146e19a37cdd9eeac76f34b7c1d2bfdaccd2a915183b45ce19891ae01d,496dbd57715628ba9b2f3aede8fe3ea1f68ec823ae8c01ab223f39f9059f1fad,08dca446712e5076c608ed022f0b2049032cd787582369eae8764d23e8c317d9,f71d1d6932e1fe291e7534e6fc5e5cccc72a344e6718c3ec08a75cb31ab7e63f,b95dcc1247e2a0d0a239733f9dea78cde81b58a906037576186218701bf8a37b,fbd7904fee1d2bccc5c9025c5dd3027e86618673c4bf36d6b468c9d4abc00c26,c3045c8455fa103916c83fc3c619cfbff8d4651a5c094b44e769c65d2698479b,d179f7cbfed3123ffecc2e28a7d19cfd7ce7cdb4e0bf63f6261210805a2570f4,524fa8a1fc15ab65af7938ee77c67301f40317e2b811859ea8241ee722a1d7f5,a5a9b4900fe6b73a1910bf0640ef8fe3736df34f4a19beea9e3a0b5facb19e45,d56aaca2085cdff3942f863bfb4f4eeca27e3b4d81e5ecf631c06d39816b00a4,5bb154d97e0a387b28c4e2675368726f40ea9995fc4e10ad7f5663dc42feda8f,261d4f4dda34e85f5312287cb2d400fded54b467892943116edf418613d8ac40,8b1d1c1bbcd656b55fefba8eeb2e587eaa4a39ff34c8a57a07b6e83c163958fa,318090c9c34e23bfbc61447f0ac3eda5adfa2251a99d24952faa438973e9ae99,1b426204dd371d8d02b72ab51754899fe553292141ebca5ac47af7c0c662ea4a,4e7ca838567f6a8adfcf2a874295d69e131020fc1b48bc9c255d67f56d1d1efd,cfe0ca046ec3ab6fac21bfa8d64dc08e13b1d8083a4b11796a9cc25d57a8ef1a,a292bb40eff2c3f597eb925907e1770890c605b806175ed0dc88a386b451fd4c,95b087a7118371233d66a4759a9a48c982750b9c090900fcf46ca92f674bc74a,aeab2080c24f1b741b0d136f9f25a1fcbde02eae02b1372bd5673a05ec16422b,512388d00605b5b05d7b9616d640f5fd7dd783e6084e0f9756d853da12a1abab,7825756db4ae187212949982c26f07442537f8e6acf3958b8dfe2eefccb9720b,129a5da521c787ab52fbb94a98b2923898c29ae68bdd367e0ee5e3a59a113b43,f2c32e17a05ff41e2ca04d426e523462c8054af6892fd52825cff6c23b547fe0,ef8d810d3a196119581f699c74bc24a68207e51acacfc29fe5078f0150607e20,bbd2b490a13835863f8e87a6d0e05e43988ecbbbb994253e46aa9dd859454be1,d4767fc0aca374ceacf133312ddeef6e9bd828fd755ffe5410b94783f052d5da,ed4917dceba8a91709d6114fb13d2b510dc82b7c0c8d4da666a0e4093d8a91a4,e874a58644a548d1550da1d6d6e484e7f2cb82e20adcd52c41b589cb75faaafc,3cfa8d0b8e9dc9b2790ac52b3210a5ef60ba904adefbbfe09f958de914414da2,dd1fa8499ca740fcee67431c1e9225a477f40288eee9710b52e9f6de3d64938a,4bfa54600c3fbc5c26c5ba31124faa376585715fd03dc4393cb2481a09b7d76e,5dfe5559413f296bd98cb764666c8e1f1c9faa56cb049634258df1fb6dc05394,a90677d6ff50deb2e5b78185823175b3ba7056404a8a58257891663e0b4bfdaf,f28cd11702d8c073accfc21344970fd9c207d794367df6522a26c343ad715f75,a10af919dfa672f3e06e2a71e7aff18a8f82f6b4f7606c458b3a1d93f8642d6a,70cdf4abf55263502087ca1f753e466c582366e0d4ffd272a4bfa8f25dab16f4,aa1d8a77b178f51ae10758c019cbc1cee94f80bc26f0276a49edb34f38e21585,526ccc8d4f707a68e2d6f3a35acc14a15c1c8780825aeb8ffacbe103cf2b30b7,c48082c937a58ec39ceac073fbd010e10425b3e23ab426b1a7221db098becb31,ff65ab3cbf0016f41582d5e1995528f4a1ea6670e6a40317d8a4011c46d4a134,ffca35eb6ecd91e373f5cb6a335ab57172bf8ccdd00015d3f8d880cbe82b0c78,2f914d572d3b37ba799c0acec2c222cfd0adac303817861e7676baa25e6b13d3,2ff37a6cf7859c259b00c078fc801ae6b64c44962507d3ec2b94d34e9cbfa817,d00177fbebddde967b53bcb4cf64ce9d02d1614c8f7982a24207b54f4a7628d1,05a011810b306cffdb4145000fb657679715f6a7ff2c8af3c697b7648fc936db,54677938b99ce702669a49ccf021af21e95a7ab11ea47d6dee828f0b7a17bbd8,a889f101d645f788b9f234b424859dbcace3eff2b7dc72de3ee2891cb37880bd,06f302357e44a14b2e2372e45f5c2baa3c557b1a75bf0b7988392be902e8cda2,2a17e7c675d1c8d2fb3a6bbcf44d4ad69b4e84868f0b4d8e871a2e10da79712a,73726eacf943f85760009d1300f31d03b7979b962bbe9a1cd29560f430ae578d,04edae211ba3705e3a3808a384e2bd8f9798718b42de22a3eee54ed1d3ad933f,02139d5c887689d25d8af14506ef60d7f23b0f4900dbd051c509b38688e29f04,f24c519db2294f138fcbb21a20ba8be112408a9ea61d0fbf11bdfabc129fd2a6,dead87b6f1e59dd5b311501cc2d7dfc4204ac84a02264a4bdef26e52fb7d8181,381e104b52db7a53b8e1d77b463c154dc3d9ae7c91db1fdfb091bbb69ad30f57,cc15fce86c228b1ab600223537bf88a47d5abee46d1028a1707cff7c464ef89a,9c59ec8d6ff6ced0c60aeed24d339620fa6feb7c7096f900626c88b330710b28,f96171259b5791bc852d06613f9a7f612f5510a1cf5357246a8bb049469ab9de,c8d63951c792546fb2049765015aaa55cd46d808ea44f6ad0f9053dacee26c2a,4914f2e414fef68959a88e23acbfeb15d1e5a5cad6837cd21ba281c83ff908c9,a84f518fecdee67dd1f127862cf51cf2bca361a8ffbfa1c1b40dfb9ca6b2f442,36d88e074cb7b981a61f535a783b5ccb6252dced35e6d2aa62e0696171862e28,10f05bbd856dd062c94d9285795321aa475df24e1c52f51b9cc58028701c8b75,8f9b62191b9030b58c7e67e6465c67a6c49f90dd87dff444239bed572c629556,16bc65c87eb2ef672e69c19583878b19282181bbb5c140cdd631b26123d58c53,5e2126d5b31b9f6e6fcbfe33f7c801e9a8076121a68ec529f560172a40840ec3,8311f5a6049f2538244b5ab9e9ea0b8a011ba7d2e8c14a8ddee803b6d2d86b24,0ac172e471ff64b788135e1a3c2585e68007284c5f568654d8059126e804fb65,4237a06e4f219d22d7eac24bc0f7e742846cae86435189b64f03eb676165c7a1,ccff8e59c6d96418b4dd95f627e047401c3c3c62d25991f44141b42cf88e2b2f,d56e7800c459e44a2cd92c36cc1140d4394748b14a5cc4e2d81ea2fcf410d70c,b82eb0f09798039fb4d854a2df8ea82096f638b3cd5d13a4bb247278e090a8fd,133cd8de6afb213aa3256da81e1de9a193a1087655572989f53282f7cb613db8,9d8b2cabdfb23c95596df09515d6bd987cf480570f8bd30a1feb9ee24805abfc,76b88dd1fa8442da7c40b05cdc6c4d16fdd1cbb93787c14a62f2988772b2fa6b,27663a40fd7c7cba36fe78a4f2fe0e36e5e3a8f690ae3ee6945909275284a0ab,5b382ed8dd406094f522b48e5835fc5e859e606f6cb1334c22e623196e345461,5979594d1b518a4dfd0fb9800d90f80ba347e828986ffe8fd31cf5a5eb3887eb,992fb0ade14a9df417597e1ddee6e0c143919bf60f61d6210df5b43b9a543fbd,ce088548cb8542cd1b4e7c31b5d5631f30eeefb4e41ed25cc9a586808e6ad618,dde6b4c512715acfa06b7feb684128877c8eb88c56b52ae31e65e59a7c10152f,288eadc1c0d87edeb8b5a67c0bfe93db049ce4d6a845d5a0a70a0fba5dc7f240,b1911fca4d63cd1d0996f1a8b9bfad2626d14b3514d78767929bc7c0b7e6bf45,d9e56c9231e5b8b15d0279ee1e44d6cfe9a91c5315a501a327293bfe88c4a5c2,3d01c9072242f8dbc0d7d438add47520583c9f83664d0b4c1f5c0825fd2b3c08,97c02359426baa51c4d05533f5f6c97e477aa8d8cef2d71ef51aab33f2851e20,b639c457488a8f3b46f568292b472b8da2bee88455e453d4938443e60c59cea2,caba75857bbc5540246e234197a04de736a98676f3d28774876233067f93c394,c6c540ff922cc0c1377a35b0a626a2b86a0e7d4e1beae1503ca8f991e3cbe526,8ade9bbf0c55be22613c54c65a6095c804764f12969beddc75754271aada4630,2d7b62aea295595ab5876d69fbb376d78f970002f3d801bb94bb45ef77a085e8,39bebf97cccdf0d225af8129438d484835c8e4327fe81a6891ca149447ae0755,7a1cd9b6e69d481d82203be358efb5babdf5a59fe9a464333d610afe7435949d,45e46df3a10c08da5ef46216c02e25bd0581be702f40f638630a7b9a9dbe3eef,1b2e7be6d7579822565bfa4be4a30890e32670dc380de0487ed06d7e8dd211e8,feb9266b1f1e2e07d69272a5fd1f72d6b05db3ad313cf0baa689ff11ecdb3c47,4eac5880ea98d7269fb106d72533c008114c69817babf22bbc8c87fcd1224e99,97220a8b33c2ebe821c652ab5362fa82f67d9eee3064ac6da4c008a8c5bf9d8e,7c898a9ff1bc0a735442a05e52d5fa397d2fbee434505f14f8e185bd6bd14f2d,280225e83ecf415b3c2fa1e9f325b6d272d68c30fbdf769366a1b8da79e0f49d,6f40661dbc99bc0dcc10cbffe206649762c5df85d47d448b7443aa2a15c27c18,1fb1784079b8995e6e24bd05274d238599421eadf3624f3015fc99e3feae107a,e94e7d80718b2e3be6d26a95fa2978a0c6ec998e2b8f56e340bf9b524b9c757c,67d4d1dfe6f1eed3f02dbca95977e139464545a4cf10ec1fe162441c746295e8,3ca19b0e5a42449fa2935ed2fd7a3184ea0cc9e658f94c38558238ce0fa5f903,c70f60ab11e4508170f659597ffd79f62adc8a3a7c2f190fc1f82289470175fe,ab2a10e23c5188d75318c2d7c9accde289532ba4d860045fbb1d7a8a1d2cc327,5409ad2694cee6d24eba35cb93f1257276d243f62f7fe6193b9f5f26d396f4c0,82433239a6740ecc8be719463821d3f2d26782fccec8350861d446443919fdb0,5f1bf99e23302320ecc3f09451ba2a70008dabde756303c8d8440eceac7cd427,d597279c3ba5a45fbe6abeea1e2525b64734678b5fccc397dcb355311aace40b,ae350258f6274c8be50cee3a23a981df7abdbe4d6436eab9409b1634958d5e92,44d16e890bbdd458fadf61b6eba2553743c346009319ae0f89c578fa046660d2,24c11c6d53572a2a313e0f1bebd95f0fcd7abd7aebec2a52309f37349f539d23,8bf754b9c605d0190c5a3ef2acab022a53e58070fae0f8d6c49d460fc698e87b,a5d27345350e79edd5d19a9d36f654f50f974e66096a2e317d3c1a824932d919,aaf2e5ecc0186a57bf1273a84d4b347bb2b5209ae49a41a8e48633de35a0392f,d72893d7192673e92fc6b97ccf4ca656ef5851be025961b5ce2547cfc6ff7630,009474ba65a1127688eb767e5cb3dee4d4051165bae7da065b3b63a8fcb6830f,322372834a5e03fee1e93003ac347ec6ffd3799637af0b4a3178ea907df0d869,b1d3a666666b6785b28ab6c12d91c59791da9046dc68cf968b6fc2cf6e392fae,ee79892f9f73051e665a0278abf153073788bee74466bb3ac20b89f79d64b45e,42e5bb22c5ab9d9eae511437f35e39a80e9d03961a5dda8dd2bfe8c17468e7ca,cfaa3bd097db7b560d95224245d662378dfb56957ce386a01839f79b330a2b07,790805a943e01370f88be313f55b5e961e359cb48800fae94b74273bd1bddd9b,ca5f4b8e658f4c884d0bdb2c695116252773f9b2b0b054c7571d0ce789cd78ff,84a140641ca4d3fecd6b026eddac28008237dab4ff017a886672c70ed5351220,1ecdf26fbfe18ff3b945c6de86c2cf651c4cb3b3e3e63c94e2e910e7ab5b10da,2c36826200a2222958f75681b6c242188ad12314928e91aa3b906b55f226b302,e4b97398ba2ae5519336794e11384bf80016bab993e8011946ff66dcfb21bf6a,2cddfcf8a7a2c70a1811b2ef75e2b69392ba047a47346c0e476b1219738d7726,6b27c1d74ea4465450405316eaa6783a061b32de18a87da654d1bff78a118446,c3b067eb3fabd5361272d1d2395905c9e611d780f990dfedc18c3d68a48a60f1,e33ecc2eeba265931371995e9a494e6d3bc9306469411930f807c37aa7fe6df3,729375d78a6083f3415294a9ff0e4c416a9e4e8bee43cf267a1884c1b76b255f,2a6bd963687de3baaa1c364df018406dd7f7d5671ec68b8990aa422672d1ba23,b48d55149dfa2a17c217d9752a39c31b888f423540bdb4612cb228fb698857d0,84320f7017cb523fc3da576b58708afe98d2ff7514d98775738e3f4b14190b1e,7bab4301d2fc8dc8b6dc36d6c86e42ac464f032587fb7d78813b093df8358a1c,95b183d02d0a2137795ddab2a957c01e1d8b767b2d174fbfbf1b628b0d529b95,f172a7f64046c2a58efc48c09a9571998486a50497391ac48bb2777eb5c5f9f7,30b080788e91053b1da02a7ccacec3738d86d7e01c3fd44a1f55dc2ee517d3d5,d89738c2b381a38c8304a4b9818dc8d3f112f7e49cf426394c76acaa7fe3c754,c2fcb00725838f31b418cad307daee77cb41c877f4e515c35217840052b33840,47406766f7d5b6ac4c5893b021df0e88610cf1cacc89321eca35fb78a9039615,7e0b39ad78f2a49c0fff3e520dbd577ceaca4ce0719682e95d5bb2248e9d23b5,d3ae3d732f5dde151b525cba3f4f26b7661bef75fa9991b09fdb9064c552a99c,9b92d14aba05fa0f4ebe1fefc23230a2475537a0334bcc67e3d0721de3a98c40,8859b6f864fc8d9314b7b5b0668f8918a19e07f4a62fe91cd51ce2409db46606,1a24f75d9e2162f095e6c3882876a45d16ccc3652eee6f8828f36b6519cf29f5,13f3bb323166c0dec06432ff8abb0c528c7e809fdfccf9539fdb0a637d12c02e,b57f2c62af13ea4ce314d342208cc3da5b2aae566c6dd8bd9324f16fa7543de7,463fd4dc69b85efd8c92a4f408aabefb420c5e04b55e9e89b970f4a3d546d6d9,5b8cf379d99fa47e1a8cbf050695d38f194067fb1efbf5185eccb7817629c604,9dcfe4759d941ffa191fbd69ec248a2843b7ec02a2be0911e2b767283bf1239c,86f12d616f3bd78420123546f8bcc0042e4f4245ad946439c5461367dc28fc3d,fab7bc6cd05a07e1ede0973e72b2b61cfeb68e91949c4a15947d82a36816be37,5fa6ed323bb835fa89759e06d86db17b17eb3cbfd2bb60e6768ffd9264dca74b,dcb8c3b57f263deac16f7e610d8f2e94361cc90347b93b60379502d37686c890,96165cdb344d8bcad38353057ff51d24da0c4905602090b1e8843a6e11db83a3,7fa726c03e2e2657b242f328abf26bcaa35e3dc7a75a23acd568efd0ba931162,8858739483f5254f1dcf2fa413014f35a4393e87f92c4eaebb82ddd2f17165b6,7306e5d1b626e97cfb877699a8e8c868fb8a5073afdd31d709d758e55e993a55,38cbb67ed736e4184eb182bc139a626f5a2d09054a43ce5eead277a9a4c2daef,78f34d94fe035c157104a8379b669729be002d58a559f98f63ab6920dc44ab37,97737169ad59b0339894a4834f6bd0c384502acaa20b2ebb13ba460d4e968ff4,1181a416fb5612619925fe60fbf916a1b924a54474cfe88e88a3f0dc34e9c169,a95f0570dac959b11ef3a693b14d1c01319d7c9de84d38cfaa56a4e2a660739d,4d109c2c881efea0dee87ec1a6bd7790bf7c146d7fbb197e3f11dbb8b2222599,7914932f98e038808fdb9be95a5145b60d93d32b8609d0bb29a3c1c497e7c85c,71489b0c3e612f6e53b4b963e7a7fa93ad78147dda6c1e3e663ae00958d03883,2102604031e515a9fc8c8f0564460ad52836bf81cff6e773e4297a426b9f7dea,498babb500357a568fe42172b2ce76a3751e8d2e4fb851f835443d4d4be444f9,135f3339c1faeeed568f08b74ef5c05b8f75f4815a85d1663a8e85b701a49e87,ff971103a962e63b9cc4e4f9e173d0501ceb4e85d38be8ca93f72b2a97bbd91b,7b795bcc24fed1e15b57e0c0c34559e5e9dd1a7a02e1932a1eb0eef53c3dca59,9b8fd1a4f762f63c050d50ed9b93e4b12c74d5a3a65957047806f16d2c7f5939,918fd167f8b63fab256cd5ddc06f08a9efdc232dcf63037dae3940a1f540d5aa,f5ef7eb4c7a37c6e423063fbbe32b2b6d8ed936f5d278ef7b9ceabdf230df48b,7a13349a94db3ebd22dd97c3ec3c5e850f060d6896b062fa7d91e5ab2ed647b3,cee4640912e3f7c5aec6013610bc38ba00210e43156dcaf2c4970ac5aedf9452,23e4b196cee998c44a29291e91549ed94ca249420963e63a78d8ef4a781c5577,f7068e5df1d17790a2c7515d520daa176a9b9b9b27d73a80952c04eb4ca37d49,eed0a58b2e7baec159b3e501d0591ac1f2a2aeb8aa875010c8e9ddb5a868926a,45ca3fd98ac2c8c1586673d2b6d60493b0bf51bd8b4bd4ae2f6ec477de89d0f4,e1251ba67166d5ee1437f80e0c9918d40518cbe89a676564122d19a10d1fba99,b358a25e1835677b3a6ffdb89205ff19db5bd880b3680edd70cbbc15beeed8e8,efe3b9bbdc0d8e21509c8eb3e6c56a7f8f66af9a16da6b31289c3dd3b2113acc,8eff9e2fe4b0051f43b8480d4cb7a4a746dbfad4b7e321ee57b2aed6b04d281e,8cbfdb88d270712ebe4b944bca093a675f9daebf064fcb59c571c18a39f454c6,e6609480939a375d64decfd39cf83287cdb3592b57e144d95110b36e467dc79a,ba4e83099735e6b7d65a6f451d0a1f18e6e9e8928874e9fdb461ecc02da922f0,d27f2c9d00d736f1068a74bb93e19b0d04cab6528e058ad39de2b178dd6f784f,e2161eb1c58fc02de7fe22c8859befa2c2ba785aa9e77c2832a19702e33d92a3,556db963abcba90a47286ab940ec20c7713c42d3184c0f8a0ecefdcc6c7cdac7,73571e19c5736faeedbb27f38308a717ee46ad0a0493bb90f4e082faf81de9ea,77021c75e31d91ab6a072d2509879c2d40999ebeed06a724e04d40e8165ee9ee,812b57d11ef05449ad3308616a7906061693c35bd53232941f5afb2306881d97,89d463d2c2c03ea77c014ad42af7736365e2b8b8f346af8d6d40a5f254ea88cd,57d37f52a5d2b4060d0400f03cbcd428141599c1d8449c94c81753d588648d1a,1fc1465414f34670b3f9b9aff337ce8896415183e1e9dd6d911262f3e7e4e123,6d4447bf9063430f8fd2f9f2fef9e09d3dfa94c7edc17dbfa3fd66780ba510c7,e43cc0134d549af550bde9e398dab6c821e6562a46272bc7744f1ac6f3a92264,6b513bdcddeb9f350bfed3c545b10621995fb4e4e682c0f27fbf55356f33b08d,d34b76796b86a2db724991763e7e35466a12359d951752a01f362bb88e293b4b,352c3c0f078795cc6611450d1eade4b9a3890919d7e7c45b8b4bceaeb949fbb7,95e24c2bdfa48d5045a5d8aae66c554f38c4e51c48e3af9b2c933487eec61efe,b5f0393988beabe5196e857354450e4679530ca980f56e5a9c501d7eb6f2ba1a,ee2ae4b3ce331581fa4b6c6aebe93bfa74226db75df8e70206b6284e1de4572b,421d178d42a42bc069bd93d3019f4a1af04b4103a1dfb63f10a328f589a6b43f,43d0fbf44250c37ccc2c6727945333b2100a79c6f44b53610ca522f046829fa1,de04ed3cd7f61ab30718486fc459aa57c58aff076e5229358602ab4e80f74e93,4e31643a1474fc95bdbaaa4cbee6499726be5e0bba58278dd14751bac2222bd2,be23d29d93b221fe755905dcabe334f0c8803f3073f81b912e89d755c77f4044,44e0fc67b96300d18b4f8e9f178daf2ddfe1f78331509792f262284b81f904d4,e6a5f37a2d49e7fb874bed867ae91ab2db7c353cf6995e46b801509bfd00807b,526a570165dd58c9e246cac7e17badf6f255ad4c78bd3b7ac68573500bd61be3,6b9b93cd6f3b821c00b6f505cdc30099c790fa2fd6c5c879b0ab0884a902b91e,441e8be4bcb6ce069fddecc6ac9c074827ff362be3d80cd2f4a3cf2febb17f94,36914ba140076f4b5b2f927a74057c2e84eb3807b876bead9b78a0c88160e282,8da583247469591f18759a0abc66e41701fd30eacfd3b456f469283150b3ee13,0d6a271800b24a374367f47be03ee3dc0fd74a94587525312352f5a42d616a29,a786a8e22754cf78dec8f372b6061db3b2c4418bce3c63ffd2132f3b999a5696,d06c58ceb9a48e4e36bb88631938a764520fc6ebbfcc8701397c7d2e949ef5da,5e0e5d821409483be0c2123e9484ce76282a51cb1592bfc47c4f81be3e17a875,f6b6a1a7b83c5107fb436af49af76367fbfaefb4f871658775d6f2bba6a6663b,fa59be79f0d153e455fc6d814e10ffce4817aee3e79eac2f3d6626c6fd31fc4f,af58be046113b1ca49d7813a9e12b715ec3a3fd54d3ed05c68db009040d3f914,d02cec2467ddaa777909f0a3a645c1c0e47274a58ee206065b55c2784e0802af".split(",");
+var unlocked = false;
+function normCode(v){ return String(v||"").toUpperCase().replace(/[^A-Z0-9]/g,""); }
+function sha256hex(ascii){
+function rr(v,a){return (v>>>a)|(v<<(32-a));}
+var maxWord=Math.pow(2,32), result="";
+var words=[], asciiBitLength=ascii.length*8;
+var hash=sha256hex.h=sha256hex.h||[], k=sha256hex.k=sha256hex.k||[];
+var primeCounter=k.length, isComposite={};
+for(var candidate=2; primeCounter<64; candidate++){
+if(!isComposite[candidate]){
+for(var i=0;i<313;i+=candidate){ isComposite[i]=candidate; }
+hash[primeCounter]=(Math.pow(candidate,.5)*maxWord)|0;
+k[primeCounter++]=(Math.pow(candidate,1/3)*maxWord)|0;
+}
+}
+ascii+='\x80';
+while(ascii.length%64-56) ascii+='\x00';
+for(var i=0;i<ascii.length;i++){
+var j=ascii.charCodeAt(i); if(j>>8) return "";
+words[i>>2]|=j<<((3-i)%4)*8;
+}
+words[words.length]=(asciiBitLength/maxWord)|0;
+words[words.length]=asciiBitLength;
+for(var j=0;j<words.length;){
+var w=words.slice(j,j+=16), oldHash=hash;
+hash=hash.slice(0,8);
+for(var i=0;i<64;i++){
+var w15=w[i-15], w2=w[i-2];
+var a=hash[0], e=hash[4];
+var temp1=hash[7]
++ (rr(e,6)^rr(e,11)^rr(e,25))
++ ((e&hash[5])^((~e)&hash[6]))
++ k[i]
++ (w[i]= (i<16)? w[i] : (w[i-16] + (rr(w15,7)^rr(w15,18)^(w15>>>3)) + w[i-7] + (rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);
+var temp2=(rr(a,2)^rr(a,13)^rr(a,22)) + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+hash=[(temp1+temp2)|0].concat(hash);
+hash[4]=(hash[4]+temp1)|0;
+}
+for(var i=0;i<8;i++){ hash[i]=(hash[i]+oldHash[i])|0; }
+}
+for(var i=0;i<8;i++){
+for(var j=3;j+1;j--){
+var b=(hash[i]>>(j*8))&255;
+result+=((b<16)?0:"")+b.toString(16);
+}
+}
+return result;
+}
+/* 页面里只存开门码的加盐迭代哈希，输码时算一遍比对，码本身不出现在页面里 */
+function checkCode(v){
+var x="CFGv1|"+v;
+for(var i=0;i<4000;i++) x=sha256hex(x);
+return CODE_HASHES.indexOf(x)>=0;
+}
+function openGate(){
+if(unlocked){ startQuiz(); return; }
+$("gate-err").textContent=""; $("gate-input").value="";
+$("gate-mask").classList.remove("hidden");
+setTimeout(function(){ $("gate-input").focus(); },60);
+}
+function closeGate(){ $("gate-mask").classList.add("hidden"); }
+function shakeEl(el){ el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake"); }
+function tryGate(){
+var v=normCode($("gate-input").value);
+if(checkCode(v)){
+unlocked=true; closeGate(); toast("开门成功，开始读取你的出厂配置"); startQuiz();
+} else {
+$("gate-err").textContent="这个码不对，检查一下有没有输错（字母和数字别看混）。";
+shakeEl($("gate-sheet"));
+}
+}
+
+function escapeHtml(s){ return String(s||"").replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+
+/* quiz */
+function startQuiz(){
+state={idx:0, answers:new Array(30).fill(null), lock:false};
+show("view-quiz"); renderQ();
+}
+function renderQ(){
+var i=state.idx, q=QS[i];
+$("q-cur").textContent=i+1;
+$("q-bar").style.width=Math.round((i+1)/30*100)+"%";
+$("q-num").textContent="QUESTION "+String(i+1).padStart(2,"0");
+$("q-text").textContent=q.q;
+$("btn-prev").style.visibility = i===0? "hidden":"visible";
+var box=$("q-opts"); box.innerHTML="";
+q.opts.forEach(function(opt,oi){
+var b=document.createElement("button"); b.className="opt"+(state.answers[i]===oi?" picked":"");
+b.innerHTML='<span class="k">'+LETTERS[oi]+'</span><span>'+escapeHtml(opt)+'</span>';
+b.addEventListener("click", function(){ pick(oi);});
+box.appendChild(b);
+});
+}
+function pick(oi){
+if(state.lock) return;
+state.lock=true;
+state.answers[state.idx]=oi;
+renderQ();
+/* 关键修复：点完立刻让被点的按钮失焦，避免下一题同位置的选项残留焦点框/粘性悬停框 */
+if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+setTimeout(function(){
+state.lock=false;
+if(state.idx<29){ state.idx++; renderQ();}
+else { finish();}
+}, 260);
+}
+function axisOf(qIdx){ return qIdx<10?0:(qIdx<20?1:2);}
+function score(){
+var counts=[[0,0,0],[0,0,0],[0,0,0]];
+state.answers.forEach(function(a,qi){
+if(a===null||a===3) return; // D 不计分
+counts[axisOf(qi)][a]++;
+});
+var picks=counts.map(function(c){
+var best=0;
+for(var k=1;k<3;k++){ if(c[k]>c[best]) best=k;} // 平局取靠前：严格大于才替换
+return best;
+});
+return {counts:counts, picks:picks, resultIdx: picks[0]*9+picks[1]*3+picks[2]};
+}
+function radarSVG(s){
+var cx=150, cy=134, R=86;
+var ang=[-90,30,150];
+function pt(a,r){ var rad=a*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; }
+function poly(rf){ return ang.map(function(a){ var p=pt(a,R*rf); return p[0].toFixed(1)+","+p[1].toFixed(1); }).join(" "); }
+var vals=s.picks.map(function(p,ai){ return Math.max(s.counts[ai][p]/10, 0.14); });
+var dataPts=ang.map(function(a,i){ return pt(a, R*vals[i]); });
+var dataPoly=dataPts.map(function(p){ return p[0].toFixed(1)+","+p[1].toFixed(1); }).join(" ");
+var svg='<div class="radar-wrap"><svg viewBox="0 0 300 244" role="img" aria-label="三轴配置图">';
+[1,0.66,0.33].forEach(function(f){ svg+='<polygon points="'+poly(f)+'" fill="none" stroke="var(--line)" stroke-width="1.2"/>'; });
+ang.forEach(function(a){ var p=pt(a,R); svg+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0].toFixed(1)+'" y2="'+p[1].toFixed(1)+'" stroke="var(--line)" stroke-width="1.2"/>'; });
+svg+='<polygon points="'+dataPoly+'" fill="var(--accent)" fill-opacity="0.20" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>';
+dataPts.forEach(function(p){ svg+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="5" fill="var(--accent)"/>'; });
+var lp=[pt(ang[0],R+24), pt(ang[1],R+28), pt(ang[2],R+28)];
+var dy=[-8,18,18];
+lp.forEach(function(p,i){
+svg+='<text x="'+p[0].toFixed(1)+'" y="'+(p[1]+dy[i]).toFixed(1)+'" text-anchor="middle" font-size="16" font-weight="900" fill="var(--ink)">'+AXES[i].labels[s.picks[i]]+' · '+(s.counts[i][s.picks[i]]*10)+'%</text>';
+});
+svg+='</svg></div>';
+return svg;
+}
+function finish(){
+show("view-calc");
+var s=score();
+setTimeout(function(){ renderResult(s.resultIdx, s, false);}, 900);
+}
+function renderResult(idx, s){
+var r=RS[idx];
+var keyParts=r.key.split("–");
+var html='';
+html+='<div class="plate"><span class="stamp">已出厂 · 别较真</span><div class="result-head">';
+html+='<div class="plate-no">出厂编号 NO. '+String(idx+1).padStart(2,"0")+' · 配置读取完毕</div>';
+html+='<div class="keys">'+keyParts.map(function(k){return '<span class="key-chip">'+escapeHtml(k)+'</span>';}).join('<span style="align-self:center;color:var(--muted);font-weight:900">×</span>')+'</div>';
+html+='<div class="result-title">'+escapeHtml(r.title)+'</div>';
+html+='<p class="portrait">'+escapeHtml(r.portrait)+'</p>';
+html+='<div class="traits">'+r.traits.map(function(t){return '<span class="trait">'+escapeHtml(t)+'</span>';}).join("")+'</div>';
+html+='</div></div>';
+html+='<div class="roast"><b>一句吐槽 —</b> '+escapeHtml(r.roast)+'</div>';
+if(s){
+html+='<div class="scorebox"><h3 class="display" style="font-size:19px;letter-spacing:.04em;margin-bottom:2px">你的配置图（一眼看懂版）</h3>';
+html+=radarSVG(s);
+var segColors=["var(--accent)","var(--teal)","var(--gold)"];
+s.counts.forEach(function(c,ai){
+var win=s.picks[ai];
+var tot=c[0]+c[1]+c[2];
+html+='<div style="margin:12px 0 0;font-weight:800;font-size:14px">'+AXES[ai].name+' → <span style="color:var(--accent)">'+AXES[ai].labels[win]+'</span> 占大头</div>';
+html+='<div class="segbar">';
+c.forEach(function(v,li){ if(v>0) html+='<i style="width:'+(v*10)+'%;background:'+segColors[li]+'"></i>'; });
+html+='</div><div class="seg-legend">';
+c.forEach(function(v,li){ html+='<span class="'+(li===win?"win":"")+'">'+AXES[ai].labels[li]+' '+v+' 票（'+(v*10)+'%）'+(li===win?" ← 你主要是这个":"")+'</span>'; });
+html+='</div>';
+if(tot<10) html+='<p style="font-size:12.5px;color:var(--muted);margin:0 0 4px">这一块有 '+(10-tot)+' 题你选了「看情况」，不计票，很正常。</p>';
+});
+html+='<p style="font-size:12.5px;color:var(--muted);margin:8px 0 0">三角图的三个角，是你三块配置各自的当家倾向，离中心越远越明显；下面每根彩条的长度，就是这类答法在你 10 道题里占的比例。</p>';
+html+='</div>';
+}
+html+='<div class="section"><h2><span class="dot"></span>深度画像</h2><p>'+escapeHtml(r.deep)+'</p></div>';
+html+='<div class="section"><h2><span class="dot"></span>优势清单</h2><ol>'+r.strengths.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join("")+'</ol></div>';
+html+='<div class="section"><h2><span class="dot"></span>卡点清单</h2><ol>'+r.blocks.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join("")+'</ol></div>';
+html+='<div class="section"><h2><span class="dot"></span>适配方向</h2><div class="fit"><div class="fit-card"><h4>职场</h4><p>'+escapeHtml(r.career)+'</p></div><div class="fit-card"><h4>感情 / 社交</h4><p>'+escapeHtml(r.love)+'</p></div></div></div>';
+html+='<div class="action-card"><h2>本周就能做的一个动作</h2><p>'+escapeHtml(r.action)+'</p></div>';
+html+='<div class="result-actions"><button class="btn btn-primary" id="btn-copy">复制我的配置卡</button><button class="btn btn-ghost" id="btn-again">↺ 再读一次</button></div>';
+html+='<div class="notice">本结果来自原创娱乐向自测，不是官方 MBTI，也不是心理测评；不作诊断、治疗、招聘决策依据，仅供娱乐和自我探索参考。全文没有「你就是这样」的定论——它更像一面镜子，帮你看看自己现在在哪、下一步往哪走。</div>';
+$("view-result").innerHTML=html;
+show("view-result");
+$("btn-again").addEventListener("click", startQuiz);
+$("btn-copy").addEventListener("click", function(){
+var txt="我的出厂配置："+r.key+"｜"+r.title+"\n"+r.portrait+"\n吐槽："+r.roast+"\n本周动作："+r.action+"\n（《人格出厂设置》原创娱乐向自测，非官方 MBTI，非心理测评）";
+copyText(txt);
+});
+}
+function copyText(txt){
+if(navigator.clipboard && navigator.clipboard.writeText){
+navigator.clipboard.writeText(txt).then(function(){ toast("已复制，去分享给朋友吧");}, function(){ fallbackCopy(txt);});
+} else fallbackCopy(txt);
+}
+function fallbackCopy(txt){
+var ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0";
+document.body.appendChild(ta); ta.select();
+try{ document.execCommand("copy"); toast("已复制，去分享给朋友吧");}catch(e){ toast("复制失败，长按选中文字手动复制吧");}
+document.body.removeChild(ta);
+}
+
+/* wiring */
+$("btn-start").addEventListener("click", openGate);
+$("btn-gate-go").addEventListener("click", tryGate);
+$("btn-gate-cancel").addEventListener("click", closeGate);
+$("gate-input").addEventListener("keydown", function(e){ if(e.key==="Enter") tryGate();});
+$("gate-mask").addEventListener("click", function(e){ if(e.target===$("gate-mask")) closeGate();});
+$("btn-quit").addEventListener("click", function(){ show("view-cover");});
+$("btn-restart1").addEventListener("click", startQuiz);
+$("btn-prev").addEventListener("click", function(){ if(state.idx>0){ state.idx--; renderQ();}});
+document.addEventListener("keydown", function(e){
+if($("view-quiz").classList.contains("hidden")) return;
+var map={"1":0,"2":1,"3":2,"4":3,"a":0,"b":1,"c":2,"d":3,"A":0,"B":1,"C":2,"D":3};
+if(e.key in map) pick(map[e.key]);
+if(e.key==="Backspace"){ e.preventDefault(); if(state.idx>0){ state.idx--; renderQ();}}
+});
+</script>
+</body>
+</html>
